@@ -1,0 +1,74 @@
+@page "/graph/{Slug}"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+@if (item is null)
+{
+    <div class="empty-state"><div class="empty-icon">◇</div><p>@Loc.T("loading")</p></div>
+}
+else
+{
+    <h1>@Loc.T("knowledge_graph")</h1>
+    <p class="lead">@Loc.T("graph_desc")</p>
+
+    <div class="graph-shell">
+        <a class="graph-center" href="@($"/article/{item.Slug}")">
+            <span class="eyebrow">@Loc.T("center_topic")</span>
+            <strong>@Loc.ItemTitle(item)</strong>
+            <small>@Loc.Category(item.Category)</small>
+        </a>
+
+        @if (related.Count > 0)
+        {
+            <div class="graph-nodes">
+                @foreach (var node in related)
+                {
+                    <a class="graph-node" href="@($"/article/{node.Slug}")">
+                        <span>@GraphIcon(node.Category)</span>
+                        <strong>@Loc.ItemTitle(node)</strong>
+                        <small>@Loc.Category(node.Category)</small>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="notice">@Loc.T("no_connections")</div>
+        }
+    </div>
+
+    @if (related.Count > 0)
+    {
+        <div class="section-head"><h2>@Loc.T("related_nodes")</h2></div>
+        <div class="article-list">
+            @foreach (var node in related)
+            {
+                <KnowledgeCard Item="node" />
+            }
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    private KnowledgeItem? item;
+    private List<KnowledgeItem> related = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        item = await Knowledge.GetBySlugAsync(Slug);
+        related = item is null ? [] : (await Knowledge.GetRelatedAsync(item)).Take(8).ToList();
+    }
+
+    private static string GraphIcon(string category) => category switch
+    {
+        "Philosophy" => "🧠",
+        "Verified Facts" => "✓",
+        "History" => "🏛",
+        "Indian Knowledge Systems" => "🇮🇳",
+        "Practices & Symbols" => "🪷",
+        "Deities" => "🌺",
+        "Thinkers & Acharyas" => "👤",
+        _ => "🕉"
+    };
+}

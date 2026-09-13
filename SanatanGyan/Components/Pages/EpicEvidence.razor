@@ -1,0 +1,86 @@
+@page "/epic-evidence"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<div class="page-hero epic-hero">
+    <div>
+        <div class="eyebrow">@Loc.T("epic_evidence")</div>
+        <h1>@Loc.T("epic_evidence_title")</h1>
+        <p>@Loc.T("epic_evidence_desc")</p>
+    </div>
+    <div class="hero-symbol">🏹</div>
+</div>
+
+<div class="evidence-principle card">
+    <div class="evidence-principle-icon">✓</div>
+    <div>
+        <strong>@Loc.T("evidence_principle_title")</strong>
+        <p>@Loc.T("evidence_principle_desc")</p>
+    </div>
+</div>
+
+<div class="evidence-type-grid">
+    <div class="mini-info"><span>🏺</span><strong>@Loc.T("archaeology")</strong><small>@Loc.T("archaeology_desc")</small></div>
+    <div class="mini-info"><span>✍</span><strong>@Loc.T("epigraphy")</strong><small>@Loc.T("epigraphy_desc")</small></div>
+    <div class="mini-info"><span>🗺</span><strong>@Loc.T("geography")</strong><small>@Loc.T("geography_desc")</small></div>
+    <div class="mini-info"><span>📜</span><strong>@Loc.T("manuscript_art")</strong><small>@Loc.T("manuscript_art_desc")</small></div>
+</div>
+
+<div class="section-head">
+    <div><div class="eyebrow">@Loc.T("treta_yuga")</div><h2>@Loc.T("ramayana_evidence")</h2></div>
+    <a href="/article/traditional-ramayana-era">@Loc.T("open_sacred_timeline")</a>
+</div>
+<div class="evidence-grid">
+    @foreach (var item in ramayana)
+    {
+        <a class="evidence-card" href="@($"/article/{item.Slug}")">
+            <div class="evidence-card-top"><span class="evidence-icon">@Icon(item)</span><span class="badge strong">✓ @Loc.T("verified")</span></div>
+            <div class="eyebrow">@(Loc.IsHindi ? item.EvidenceTypeHi : item.EvidenceTypeEn)</div>
+            <h3>@Loc.ItemTitle(item)</h3>
+            <p>@Loc.ItemSummary(item)</p>
+            <div class="evidence-scope">@(Loc.IsHindi ? item.EvidenceScopeHi : item.EvidenceScopeEn)</div>
+        </a>
+    }
+</div>
+
+<div class="section-head">
+    <div><div class="eyebrow">@Loc.T("dvapara_yuga")</div><h2>@Loc.T("mahabharata_evidence")</h2></div>
+    <a href="/article/traditional-mahabharata-era">@Loc.T("open_sacred_timeline")</a>
+</div>
+<div class="evidence-grid">
+    @foreach (var item in mahabharata)
+    {
+        <a class="evidence-card" href="@($"/article/{item.Slug}")">
+            <div class="evidence-card-top"><span class="evidence-icon">@Icon(item)</span><span class="badge strong">✓ @Loc.T("verified")</span></div>
+            <div class="eyebrow">@(Loc.IsHindi ? item.EvidenceTypeHi : item.EvidenceTypeEn)</div>
+            <h3>@Loc.ItemTitle(item)</h3>
+            <p>@Loc.ItemSummary(item)</p>
+            <div class="evidence-scope">@(Loc.IsHindi ? item.EvidenceScopeHi : item.EvidenceScopeEn)</div>
+        </a>
+    }
+</div>
+
+<div class="notice evidence-note"><strong>@Loc.T("reading_note"):</strong> @Loc.T("epic_evidence_reading_note")</div>
+
+@code {
+    private List<KnowledgeItem> ramayana = [];
+    private List<KnowledgeItem> mahabharata = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var all = (await Knowledge.GetByCategoryAsync("Epic Evidence")).Where(IsVerified).ToList();
+        ramayana = all.Where(x => x.Tags.Any(t => t.Equals("ramayana", StringComparison.OrdinalIgnoreCase))).ToList();
+        mahabharata = all.Where(x => x.Tags.Any(t => t.Equals("mahabharata", StringComparison.OrdinalIgnoreCase) || t.Equals("krishna", StringComparison.OrdinalIgnoreCase))).ToList();
+    }
+
+    private static bool IsVerified(KnowledgeItem item) => item.EvidenceLevel == "Strong Evidence" && item.Sources.Count > 0;
+    private static string Icon(KnowledgeItem item)
+    {
+        var type = item.EvidenceTypeEn ?? string.Empty;
+        if (type.Contains("Inscription", StringComparison.OrdinalIgnoreCase) || type.Contains("Epigraph", StringComparison.OrdinalIgnoreCase)) return "✍";
+        if (type.Contains("Geography", StringComparison.OrdinalIgnoreCase)) return "🗺";
+        if (type.Contains("Manuscript", StringComparison.OrdinalIgnoreCase) || type.Contains("Art", StringComparison.OrdinalIgnoreCase)) return "📜";
+        if (type.Contains("Marine", StringComparison.OrdinalIgnoreCase)) return "⚓";
+        return "🏺";
+    }
+}

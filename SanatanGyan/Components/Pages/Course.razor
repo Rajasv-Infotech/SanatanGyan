@@ -1,0 +1,86 @@
+@page "/course/{Id}"
+@inject LearningService Learning
+@inject LearningProgressService Progress
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+@if (path is null)
+{
+    <div class="empty-state"><div class="empty-icon">▤</div><p>@Loc.T("loading")</p></div>
+}
+else
+{
+    var done = Progress.CompletedCount(path.LessonSlugs);
+    var total = path.LessonSlugs.Count;
+    var percent = total == 0 ? 0 : (int)Math.Round(100d * done / total);
+
+    <div class="course-header card">
+        <div class="course-icon big">@path.Icon</div>
+        <div>
+            <div class="eyebrow">@Loc.T("course") · @Loc.Level(path.Level)</div>
+            <h1>@(Loc.IsHindi ? path.TitleHi : path.TitleEn)</h1>
+            <p>@(Loc.IsHindi ? path.DescriptionHi : path.DescriptionEn)</p>
+            <div class="progress-track large"><span style="width:@percent%"></span></div>
+            <p class="progress-label"><strong>@(percent)%</strong> · @done / @total @Loc.T("lessons_completed")</p>
+            <div class="btn-row">
+                @if (!string.IsNullOrWhiteSpace(path.QuizId))
+                {
+                    <a class="btn primary" href="@($"/quiz/{path.QuizId}")">@Loc.T("take_quiz")</a>
+                }
+                @if (bestScore is not null)
+                {
+                    <span class="chip">@Loc.T("best_score"): @bestScore%</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="section-head"><h2>@Loc.T("lessons")</h2></div>
+    <div class="lesson-list">
+        @for (var index = 0; index < lessons.Count; index++)
+        {
+            var lesson = lessons[index];
+            var complete = Progress.IsCompleted(lesson.Slug);
+            <div class="lesson-row @(complete ? "is-complete" : "")">
+                <a class="lesson-main" href="@($"/article/{lesson.Slug}")">
+                    <div class="lesson-number">@(index + 1)</div>
+                    <div>
+                        <div class="eyebrow">@Loc.T("lesson") @(index + 1)</div>
+                        <h3>@Loc.ItemTitle(lesson)</h3>
+                        <p>@Loc.ItemSummary(lesson)</p>
+                    </div>
+                </a>
+                <button class="complete-btn @(complete ? "done" : "")" @onclick="() => ToggleLesson(lesson.Slug)" title="@(complete ? Loc.T("mark_unlearned") : Loc.T("mark_learned"))">
+                    @(complete ? "✓" : "○")
+                </button>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+    private LearningPathDefinition? path;
+    private List<KnowledgeItem> lessons = [];
+    private int? bestScore;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        path = await Learning.GetPathAsync(Id);
+        lessons = [];
+        if (path is null) return;
+
+        foreach (var slug in path.LessonSlugs)
+        {
+            var item = await Knowledge.GetBySlugAsync(slug);
+            if (item is not null) lessons.Add(item);
+        }
+        bestScore = string.IsNullOrWhiteSpace(path.QuizId) ? null : Progress.BestQuizScore(path.QuizId);
+    }
+
+    private void ToggleLesson(string slug)
+    {
+        Progress.ToggleLesson(slug);
+        StateHasChanged();
+    }
+}

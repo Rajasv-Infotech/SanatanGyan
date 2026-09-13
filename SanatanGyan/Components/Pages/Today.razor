@@ -1,0 +1,136 @@
+@page "/today"
+@inject DailySanatanService Daily
+@inject PanchangService Panchang
+@inject LearningService Learning
+@inject LearningProgressService Progress
+@inject LanguageService Loc
+
+<h1>@Loc.T("today_sanatan")</h1>
+<p class="lead">@Loc.T("today_desc")</p>
+
+@if (snapshot is null)
+{
+    <div class="empty-state"><div class="empty-icon">ॐ</div><p>@Loc.T("loading")</p></div>
+}
+else
+{
+    <div class="today-hero card">
+        <div>
+            <div class="eyebrow">@Loc.T("today_date")</div>
+            <h2>@DailySanatanService.FormatDate(snapshot.Date, Loc.IsHindi)</h2>
+            <div class="chip-row"><span class="chip">@Loc.T("vara"): @(Loc.IsHindi ? snapshot.VaraHi : snapshot.VaraEn)</span></div>
+        </div>
+        <div class="today-om">ॐ</div>
+    </div>
+
+    <div class="card panchang-card">
+        <div class="panchang-head">
+            <div>
+                <div class="eyebrow">@Loc.T("panchang_foundation")</div>
+                <h2>@Loc.T("panchang_foundation")</h2>
+            </div>
+            <div class="panchang-location">
+                <label for="panchang-city">@Loc.T("panchang_location")</label>
+                <select id="panchang-city" value="@selectedLocationId" @onchange="OnLocationChanged">
+                    @foreach (var city in Panchang.Locations)
+                    {
+                        <option value="@city.Id">@(Loc.IsHindi ? city.NameHi : city.NameEn)</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @if (panchang is null)
+        {
+            <p>@Loc.T("loading")</p>
+        }
+        else if (!panchang.IsAvailable)
+        {
+            <p>@(Loc.IsHindi ? panchang.ErrorHi : panchang.ErrorEn)</p>
+            <button class="btn" @onclick="RefreshPanchangAsync">@Loc.T("panchang_refresh")</button>
+        }
+        else
+        {
+            <div class="panchang-grid">
+                <PanchangTile Label="@Loc.T("tithi")" Value="@(Loc.IsHindi ? panchang.TithiHi : panchang.TithiEn)" />
+                <PanchangTile Label="@Loc.T("paksha")" Value="@(Loc.IsHindi ? panchang.PakshaHi : panchang.PakshaEn)" />
+                <PanchangTile Label="@Loc.T("nakshatra")" Value="@(Loc.IsHindi ? panchang.NakshatraHi : panchang.NakshatraEn)" />
+                <PanchangTile Label="@Loc.T("yoga")" Value="@(Loc.IsHindi ? panchang.YogaHi : panchang.YogaEn)" />
+                <PanchangTile Label="@Loc.T("karana")" Value="@(Loc.IsHindi ? panchang.KaranaHi : panchang.KaranaEn)" />
+                <PanchangTile Label="@Loc.T("masa")" Value="@(Loc.IsHindi ? panchang.MasaHi : panchang.MasaEn)" />
+                <PanchangTile Label="@Loc.T("ritu")" Value="@(Loc.IsHindi ? panchang.RituHi : panchang.RituEn)" />
+                <PanchangTile Label="@Loc.T("sunrise")" Value="@FormatTime(panchang.SunriseLocal)" />
+                <PanchangTile Label="@Loc.T("sunset")" Value="@FormatTime(panchang.SunsetLocal)" />
+            </div>
+            <p class="panchang-basis">@Loc.T("panchang_basis")</p>
+            <a class="btn" href="/article/fact-panchanga-five-limbs">@Loc.T("learn_panchang")</a>
+        }
+    </div>
+
+    @if (continuePath is not null)
+    {
+        var done = Progress.CompletedCount(continuePath.LessonSlugs);
+        var total = continuePath.LessonSlugs.Count;
+        var pct = total == 0 ? 0 : (int)Math.Round(100d * done / total);
+        <div class="section-head"><h2>@Loc.T("learning_progress")</h2><a href="/learn">@Loc.T("view_all")</a></div>
+        <div class="card progress-card">
+            <div class="course-icon">@continuePath.Icon</div>
+            <div class="progress-card-main">
+                <h3>@(Loc.IsHindi ? continuePath.TitleHi : continuePath.TitleEn)</h3>
+                <p>@done / @total @Loc.T("lessons_completed")</p>
+                <div class="progress-track"><span style="width:@pct%"></span></div>
+            </div>
+            <a class="btn" href="@($"/course/{continuePath.Id}")">@(done == 0 ? Loc.T("start_course") : Loc.T("continue_course"))</a>
+        </div>
+    }
+
+    <div class="daily-grid">
+        @if (snapshot.Knowledge is not null)
+        {
+            <DailyCard Title="@Loc.T("daily_knowledge")" Item="snapshot.Knowledge" Icon="🕉" />
+        }
+        @if (snapshot.Pride is not null)
+        {
+            <DailyCard Title="@Loc.T("daily_pride")" Item="snapshot.Pride" Icon="🇮🇳" />
+        }
+        @if (snapshot.Fact is not null)
+        {
+            <DailyCard Title="@Loc.T("daily_science")" Item="snapshot.Fact" Icon="✓" />
+        }
+    </div>
+}
+
+@code {
+    private DailySanatanSnapshot? snapshot;
+    private PanchangDay? panchang;
+    private LearningPathDefinition? continuePath;
+    private string selectedLocationId = "delhi";
+
+    protected override async Task OnInitializedAsync()
+    {
+        snapshot = await Daily.GetTodayAsync();
+        selectedLocationId = Panchang.SelectedLocation.Id;
+        panchang = await Panchang.GetTodayAsync();
+        var paths = await Learning.GetPathsAsync();
+        continuePath = paths
+            .OrderByDescending(x => Progress.CompletedCount(x.LessonSlugs))
+            .ThenBy(x => x.Level == "Beginner" ? 0 : 1)
+            .FirstOrDefault(x => Progress.Progress(x.LessonSlugs) < 1) ?? paths.FirstOrDefault();
+    }
+
+    private async Task OnLocationChanged(ChangeEventArgs args)
+    {
+        var id = args.Value?.ToString();
+        if (string.IsNullOrWhiteSpace(id)) return;
+        selectedLocationId = id;
+        Panchang.SetLocation(id);
+        await RefreshPanchangAsync();
+    }
+
+    private async Task RefreshPanchangAsync()
+    {
+        panchang = await Panchang.GetTodayAsync();
+    }
+
+    private string FormatTime(DateTime? value) => value is null ? "—" : value.Value.ToString(Loc.IsHindi ? "HH:mm" : "h:mm tt");
+}

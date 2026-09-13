@@ -1,0 +1,33 @@
+SANATAN GYAN v0.8.1 - BUILD INSTRUCTIONS
+
+WINDOWS - DIRECT VISUAL STUDIO WORKFLOW
+1. Extract this ZIP into a NEW folder.
+2. Open SanatanGyan.sln in Visual Studio 2022 with .NET 10 + .NET MAUI installed.
+3. Let NuGet restore finish.
+4. Select: Debug | x64 | Windows Machine
+5. Press F5.
+
+Do NOT run Run-Windows.bat first. It is optional only.
+
+If NETSDK1005 appears after using an older project folder:
+- close Visual Studio
+- delete .vs
+- delete SanatanGyan\bin
+- delete SanatanGyan\obj
+- reopen this v0.8.1 solution and wait for a full restore
+
+ANDROID APK
+Double-click Build-APK.bat
+
+Output:
+artifacts\android\SanatanGyan-v0.8.1-LocalTest.apk
+
+Direct commands:
+dotnet workload restore SanatanGyan\SanatanGyan.csproj
+dotnet restore SanatanGyan\SanatanGyan.csproj
+dotnet build SanatanGyan\SanatanGyan.csproj -f net10.0-android -c Release -p:Platform=AnyCPU -t:SignAndroidPackage -p:AndroidPackageFormats=apk -p:AndroidKeyStore=false -p:AndroidUseApkSigner=true --no-restore
+
+IMPORTANT
+- Restore the full project. Do NOT restore only net10.0-android because the same assets file is used by Visual Studio for Windows too.
+- Do NOT set AndroidManifest manually. MAUI uses Platforms\Android\AndroidManifest.xml automatically.
+- On Android 15+ MainActivity keeps the WebView inside system bars; CSS safe-area padding is also enabled.

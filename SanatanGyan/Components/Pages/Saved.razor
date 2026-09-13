@@ -1,0 +1,27 @@
+@page "/saved"
+@inject KnowledgeService Knowledge
+@inject BookmarkService Bookmarks
+@inject LanguageService Loc
+
+<h1>@Loc.T("saved")</h1>
+<p>@Loc.T("saved_desc")</p>
+
+@if (saved.Count == 0)
+{
+    <div class="empty-state"><div class="empty-icon">♡</div><h2>@Loc.T("nothing_saved")</h2><p>@Loc.T("nothing_saved_help")</p><a class="btn primary" href="/explore">@Loc.T("explore")</a></div>
+}
+else
+{
+    <div class="article-list">
+        @foreach (var item in saved) { <KnowledgeCard Item="item" /> }
+    </div>
+}
+
+@code {
+    private List<KnowledgeItem> saved = [];
+    protected override async Task OnInitializedAsync()
+    {
+        var ids = Bookmarks.GetAll();
+        saved = (await Knowledge.GetAllAsync()).Where(x => ids.Contains(x.Id)).ToList();
+    }
+}

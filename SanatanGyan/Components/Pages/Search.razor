@@ -1,0 +1,76 @@
+@page "/search"
+@inject KnowledgeService Knowledge
+@inject NavigationManager Nav
+@inject LanguageService Loc
+
+<h1>@Loc.T("search_knowledge")</h1>
+<div class="search-panel">
+    <input class="searchbox"
+           value="@query"
+           @oninput="HandleInputAsync"
+           placeholder="@Loc.T("search_placeholder")"
+           autofocus />
+</div>
+<p style="color:var(--muted)">@Loc.T("search_help")</p>
+
+@if (!string.IsNullOrWhiteSpace(query))
+{
+    <div class="section-head"><h2>@results.Count @Loc.T("results")</h2></div>
+
+    @if (results.Count == 0)
+    {
+        <div class="empty-state compact-empty">
+            <div class="empty-icon">⌕</div>
+            <h2>@Loc.T("no_result")</h2>
+            <p>@Loc.T("no_result_help")</p>
+        </div>
+    }
+    else
+    {
+        <div class="article-list">
+            @foreach (var item in results)
+            {
+                <KnowledgeCard Item="item" />
+            }
+        </div>
+    }
+}
+else
+{
+    <div class="section-head"><h2>@Loc.T("popular_searches")</h2></div>
+    <div class="chip-row">
+        @foreach (var suggestion in Suggestions)
+        {
+            <button class="filter-btn" @onclick="() => UseSuggestionAsync(suggestion)">@suggestion</button>
+        }
+    </div>
+}
+
+@code {
+    private string[] Suggestions => Loc.IsHindi
+        ? ["कर्म", "आत्मा", "योग", "आर्यभट", "सुश्रुत", "नक्षत्र", "नवग्रह", "पंचांग", "शून्य", "आयुर्वेद"]
+        : ["karma", "atman", "yoga", "Aryabhata", "Sushruta", "nakshatra", "navagraha", "panchang", "zero", "ayurveda"];
+
+    private string query = string.Empty;
+    private List<KnowledgeItem> results = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        query = QueryStringHelper.Get(Nav.ToAbsoluteUri(Nav.Uri), "q") ?? string.Empty;
+        await RunSearchAsync();
+    }
+
+    private async Task HandleInputAsync(ChangeEventArgs args)
+    {
+        query = args.Value?.ToString() ?? string.Empty;
+        await RunSearchAsync();
+    }
+
+    private async Task UseSuggestionAsync(string value)
+    {
+        query = value;
+        await RunSearchAsync();
+    }
+
+    private async Task RunSearchAsync() => results = (await Knowledge.SearchAsync(query)).ToList();
+}

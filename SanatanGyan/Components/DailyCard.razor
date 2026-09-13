@@ -1,0 +1,14 @@
+@inject LanguageService Loc
+<div class="card daily-card">
+    <div class="daily-icon">@Icon</div>
+    <div class="eyebrow">@Title</div>
+    <h3>@Loc.ItemTitle(Item)</h3>
+    <p>@Loc.ItemSummary(Item)</p>
+    <a class="btn" href="@($"/article/{Item.Slug}")">@Loc.T("read")</a>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public KnowledgeItem Item { get; set; } = default!;
+    [Parameter] public string Icon { get; set; } = "🕉";
+}

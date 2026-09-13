@@ -1,0 +1,44 @@
+@page "/understand"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<div class="page-hero understand-hero">
+    <div class="hero-symbol">ॐ</div>
+    <div>
+        <div class="eyebrow">@Loc.T("understand_sanatan_eyebrow")</div>
+        <h1>@Loc.T("understand_sanatan_title")</h1>
+        <p>@Loc.T("understand_sanatan_desc")</p>
+    </div>
+</div>
+
+<div class="notice understand-note">@Loc.T("understand_sanatan_note")</div>
+
+<div class="search-panel understand-search">
+    <span>⌕</span>
+    <input class="searchbox" @bind="query" @bind:event="oninput" placeholder="@Loc.T("understand_search")" />
+</div>
+
+<div class="article-list" style="margin-top:14px">
+    @foreach (var item in Filtered)
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+@code {
+    private List<KnowledgeItem> items = [];
+    private string query = string.Empty;
+
+    protected override async Task OnInitializedAsync() =>
+        items = (await Knowledge.GetAllAsync())
+            .Where(x => x.Category == "Sanatan Understanding")
+            .OrderByDescending(x => x.Featured)
+            .ThenBy(x => Loc.ItemTitle(x))
+            .ToList();
+
+    private IEnumerable<KnowledgeItem> Filtered => string.IsNullOrWhiteSpace(query)
+        ? items
+        : items.Where(x =>
+            Loc.ItemTitle(x).Contains(query, StringComparison.OrdinalIgnoreCase) ||
+            Loc.ItemSummary(x).Contains(query, StringComparison.OrdinalIgnoreCase));
+}

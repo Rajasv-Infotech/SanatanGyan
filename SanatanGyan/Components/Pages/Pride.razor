@@ -1,0 +1,23 @@
+@page "/pride"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<h1>@Loc.T("garv_with_proof")</h1>
+<p class="lead">@Loc.T("pride_page_desc")</p>
+<div class="chip-row"><span class="badge strong">✓ @Loc.T("verified_only")</span></div>
+<div class="article-list">
+    @foreach (var item in pride)
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+@code {
+    private List<KnowledgeItem> pride = [];
+    protected override async Task OnInitializedAsync()
+    {
+        pride = (await Knowledge.GetByCategoryAsync("Garv with Proof"))
+            .Where(x => x.EvidenceLevel == "Strong Evidence" && x.Sources.Count > 0)
+            .OrderBy(x => Loc.ItemTitle(x))
+            .ToList();
+    }
+}

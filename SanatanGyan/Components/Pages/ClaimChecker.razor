@@ -1,0 +1,25 @@
+@page "/facts"
+@page "/claims"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<h1>@Loc.T("claim_title")</h1>
+<p class="lead">@Loc.T("claim_desc")</p>
+<div class="chip-row"><span class="badge strong">✓ @Loc.T("verified_only")</span></div>
+<div class="article-list">
+    @foreach (var item in facts)
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+@code {
+    private List<KnowledgeItem> facts = [];
+    protected override async Task OnInitializedAsync()
+    {
+        facts = (await Knowledge.GetByCategoryAsync("Verified Facts"))
+            .Where(x => x.EvidenceLevel == "Strong Evidence" && x.Sources.Count > 0)
+            .OrderBy(x => Loc.ItemTitle(x))
+            .ToList();
+    }
+}

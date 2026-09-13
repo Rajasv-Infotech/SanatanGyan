@@ -1,0 +1,110 @@
+@page "/texts"
+@inject ScriptureService Scriptures
+@inject LanguageService Loc
+
+<div class="page-hero texts-page-hero">
+    <div>
+        <div class="eyebrow">@Loc.T("texts_library")</div>
+        <h1>@Loc.T("texts_library")</h1>
+        <p>@Loc.T("texts_desc_v07")</p>
+    </div>
+    <div class="hero-symbol">📜</div>
+</div>
+
+<div class="texts-summary-row">
+    <div class="summary-stat"><strong>@all.Count</strong><small>@Loc.T("catalogued_texts")</small></div>
+    <div class="summary-stat"><strong>@categories.Count</strong><small>@Loc.T("text_families")</small></div>
+    <div class="summary-stat"><strong>@all.Count(x => x.IsMajor)</strong><small>@Loc.T("major_texts")</small></div>
+</div>
+
+<div class="search-panel texts-search">
+    <span>⌕</span><input value="@query" @oninput="OnSearch" placeholder="@Loc.T("texts_search")" />
+</div>
+
+<div class="filter-row text-filter-row">
+    <button class="filter-btn @(selectedCategory == "All" ? "active" : "")" @onclick='() => SelectCategory("All")'>@Loc.T("all_texts")</button>
+    @foreach (var category in categories)
+    {
+        <button class="filter-btn @(selectedCategory == category ? "active" : "")" @onclick="() => SelectCategory(category)">@CategoryLabel(category)</button>
+    }
+</div>
+
+@if (selectedCategory == "All" && string.IsNullOrWhiteSpace(query))
+{
+    <div class="section-head compact-head"><div><div class="eyebrow">@Loc.T("start_here")</div><h2>@Loc.T("major_texts")</h2></div></div>
+    <div class="featured-text-strip">
+        @foreach (var text in all.Where(x => x.IsMajor).Take(8))
+        {
+            <a class="featured-text-card" href="@($"/text/{text.Slug}")">
+                <span>📖</span>
+                <div><small>@(Loc.IsHindi ? text.CategoryHi : text.Category)</small><strong>@(Loc.IsHindi ? text.TitleHi : text.TitleEn)</strong></div>
+            </a>
+        }
+    </div>
+}
+
+<div class="section-head compact-head"><h2>@(selectedCategory == "All" ? Loc.T("all_texts") : CategoryLabel(selectedCategory))</h2><span class="chip">@filtered.Count @Loc.T("results")</span></div>
+<div class="texts-grid">
+    @foreach (var text in filtered)
+    {
+        <a class="card text-card" href="@($"/text/{text.Slug}")">
+            <div class="text-card-top">
+                <span class="text-symbol">@TextIcon(text.Category)</span>
+                @if (text.IsMajor) { <span class="badge strong">✦ @Loc.T("major_text")</span> }
+            </div>
+            <div class="eyebrow">@(Loc.IsHindi ? text.CategoryHi : text.Category)</div>
+            <h3>@(Loc.IsHindi ? text.TitleHi : text.TitleEn)</h3>
+            <p>@(Loc.IsHindi ? text.DescriptionHi : text.DescriptionEn)</p>
+            <div class="text-meta">
+                <span>@(Loc.IsHindi ? text.KindHi : text.KindEn)</span>
+                <span>@(Loc.IsHindi ? text.LanguageHi : text.LanguageEn)</span>
+            </div>
+            <div class="text-card-open">@Loc.T("open_details") <b>›</b></div>
+        </a>
+    }
+</div>
+
+<div class="notice positive-note"><strong>ॐ</strong> @Loc.T("text_catalog_note_v07")</div>
+
+@code {
+    private List<ScriptureInfo> all = [];
+    private List<ScriptureInfo> filtered = [];
+    private List<string> categories = [];
+    private string selectedCategory = "All";
+    private string query = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        all = (await Scriptures.GetAllAsync()).ToList();
+        categories = all.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
+        Apply();
+    }
+
+    private void OnSearch(ChangeEventArgs args) { query = args.Value?.ToString() ?? string.Empty; Apply(); }
+    private void SelectCategory(string category) { selectedCategory = category; Apply(); }
+
+    private void Apply()
+    {
+        IEnumerable<ScriptureInfo> source = all;
+        if (selectedCategory != "All") source = source.Where(x => x.Category == selectedCategory);
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            var q = query.Trim();
+            source = source.Where(x =>
+                x.TitleEn.Contains(q, StringComparison.OrdinalIgnoreCase) || x.TitleHi.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                x.Category.Contains(q, StringComparison.OrdinalIgnoreCase) || x.CategoryHi.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                x.KindEn.Contains(q, StringComparison.OrdinalIgnoreCase) || x.KindHi.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                x.DescriptionEn.Contains(q, StringComparison.OrdinalIgnoreCase) || x.DescriptionHi.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                x.KeyThemesEn.Contains(q, StringComparison.OrdinalIgnoreCase) || x.KeyThemesHi.Contains(q, StringComparison.OrdinalIgnoreCase));
+        }
+        filtered = source.OrderByDescending(x => x.IsMajor).ThenBy(x => Loc.IsHindi ? x.TitleHi : x.TitleEn).ToList();
+    }
+
+    private string CategoryLabel(string category) => all.FirstOrDefault(x => x.Category == category) is { } item ? (Loc.IsHindi ? item.CategoryHi : item.Category) : category;
+    private static string TextIcon(string category) => category switch
+    {
+        "Veda & Vedic Corpus" => "ॐ", "Upanishads" => "◉", "Itihasa & Gita" => "🏹", "Puranas" => "✺",
+        "Darshana" => "◇", "Vedanta & Commentary" => "◎", "Agama & Tantra" => "△", "Yoga" => "☸",
+        "Knowledge Texts" => "✦", _ => "📜"
+    };
+}

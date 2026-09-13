@@ -1,0 +1,49 @@
+@page "/explore"
+@inject KnowledgeService Knowledge
+@inject NavigationManager Nav
+@inject LanguageService Loc
+
+<h1>@Loc.T("explore")</h1>
+<div class="explore-shortcuts">
+    <a class="shortcut-card" href="/understand"><span>ॐ</span><strong>@Loc.T("understand_sanatan")</strong></a>
+    <a class="shortcut-card" href="/texts"><span>📚</span><strong>@Loc.T("texts_library")</strong></a>
+    <a class="shortcut-card" href="/facts"><span>✓</span><strong>@Loc.T("verified_facts")</strong></a>
+    <a class="shortcut-card" href="/science"><span>🔬</span><strong>@Loc.T("science_research")</strong></a>
+    <a class="shortcut-card" href="/today"><span>☀</span><strong>@Loc.T("panchang_foundation")</strong></a>
+    <a class="shortcut-card" href="/epic-evidence"><span>🏹</span><strong>@Loc.T("epic_evidence")</strong></a>
+    <a class="shortcut-card" href="/timeline"><span>⌛</span><strong>@Loc.T("history_timeline")</strong></a>
+</div>
+<div class="filter-row">
+    <button class="filter-btn @(selected == "All" ? "active" : "")" @onclick='() => Select("All")'>@Loc.T("all")</button>
+    @foreach (var c in categories)
+    {
+        <button class="filter-btn @(selected == c ? "active" : "")" @onclick="() => Select(c)">@Loc.Category(c)</button>
+    }
+</div>
+
+<div class="article-list">
+    @foreach (var item in filtered)
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+@code {
+    private List<KnowledgeItem> all = [];
+    private List<KnowledgeItem> filtered = [];
+    private string selected = "All";
+    private List<string> categories = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        all = (await Knowledge.GetAllAsync()).ToList();
+        categories = all.Select(x => x.Category).Distinct().OrderBy(x => x).ToList();
+        var value = QueryStringHelper.Get(Nav.ToAbsoluteUri(Nav.Uri), "category");
+        if (!string.IsNullOrWhiteSpace(value) && categories.Contains(value)) selected = value;
+        Apply();
+    }
+    private void Select(string value) { selected = value; Apply(); }
+    private void Apply() => filtered = selected == "All"
+        ? all.OrderByDescending(x => x.Featured).ThenBy(x => Loc.ItemTitle(x)).ToList()
+        : all.Where(x => x.Category == selected).OrderByDescending(x => x.Featured).ThenBy(x => Loc.ItemTitle(x)).ToList();
+}

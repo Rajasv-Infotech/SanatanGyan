@@ -1,0 +1,206 @@
+@page "/article/{Slug}"
+@inject KnowledgeService Knowledge
+@inject BookmarkService Bookmarks
+@inject BrowserService Browser
+@inject LearningProgressService Progress
+@inject LanguageService Loc
+
+@if (item is null)
+{
+    <div class="empty-state"><div class="empty-icon">ॐ</div><p>@Loc.T("loading")</p></div>
+}
+else
+{
+    <article class="knowledge-detail">
+        <div class="article-hero-card">
+            <div class="article-hero-main">
+                <div class="eyebrow">@Loc.Category(item.Category) · @Loc.Level(item.Level)</div>
+                <h1>@Loc.ItemTitle(item)</h1>
+                @if (!string.IsNullOrWhiteSpace(Loc.ItemSubtitle(item)))
+                {
+                    <p class="article-subtitle">@Loc.ItemSubtitle(item)</p>
+                }
+                <p class="lead">@Loc.ItemSummary(item)</p>
+                <div class="chip-row">
+                    @if (IsVerified(item))
+                    {
+                        <span class="badge strong">✓ @Loc.Evidence("Strong Evidence")</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(item.EvidenceTypeEn))
+                    {
+                        <span class="chip">@(Loc.IsHindi ? item.EvidenceTypeHi : item.EvidenceTypeEn)</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(item.DateLabel))
+                    {
+                        <span class="chip">@Loc.DateLabel(item.DateLabel)</span>
+                    }
+                </div>
+                <div class="btn-row article-actions">
+                    <button class="btn primary" @onclick="ToggleSave">@(saved ? $"✓ {Loc.T("saved_done")}" : $"♡ {Loc.T("save")}")</button>
+                    <button class="btn learned-btn @(learned ? "is-learned" : "")" @onclick="ToggleLearned">@(learned ? $"✓ {Loc.T("completed")}" : $"○ {Loc.T("mark_learned")}")</button>
+                    <a class="btn" href="@($"/graph/{item.Slug}")">◇ @Loc.T("open_graph")</a>
+                </div>
+            </div>
+            <div class="article-hero-symbol">@ArticleSymbol(item)</div>
+        </div>
+
+        <div class="article-layout-v07">
+            <div class="article-main-v07">
+                @if (ShouldShowBody())
+                {
+                    <section class="article-section article-body intro-section">
+                        <div>@Loc.ItemBody(item)</div>
+                    </section>
+                }
+
+                @foreach (var section in VisibleSections())
+                {
+                    <section class="article-section article-body">
+                        <h2>@Loc.SectionTitle(section)</h2>
+                        <div>@Loc.SectionContent(section)</div>
+                    </section>
+                }
+
+                @if (item.Sources.Count > 0)
+                {
+                    <section class="sources-section">
+                        <div class="section-head compact-head"><div><div class="eyebrow">@Loc.T("source_backed")</div><h2>@Loc.T("evidence_sources")</h2></div></div>
+                        <p class="source-language-note">@Loc.T("source_original_language_note")</p>
+                        <div class="source-grid">
+                            @foreach (var source in item.Sources)
+                            {
+                                <div class="source-card">
+                                    <div class="source-icon">↗</div>
+                                    <div class="source-content">
+                                        <strong>@source.Title</strong>
+                                        <small>@source.Publisher</small>
+                                        @if (!Loc.IsHindi && !string.IsNullOrWhiteSpace(source.Note))
+                                        {
+                                            <p>@source.Note</p>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(source.Url))
+                                        {
+                                            <button class="btn source-btn" @onclick="() => OpenSourceAsync(source.Url)">@Loc.T("open_source") ↗</button>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+            </div>
+
+            <aside class="article-side-v07">
+                @if (!string.IsNullOrWhiteSpace(item.EvidenceScopeEn))
+                {
+                    <div class="card side-card evidence-side-card">
+                        <div class="eyebrow">@Loc.T("evidence_scope")</div>
+                        <p>@(Loc.IsHindi ? item.EvidenceScopeHi : item.EvidenceScopeEn)</p>
+                    </div>
+                }
+
+                @if (VisibleSections().Count > 0)
+                {
+                    <div class="card side-card">
+                        <div class="eyebrow">@Loc.T("in_this_article")</div>
+                        <ol class="article-toc">
+                            @foreach (var section in VisibleSections())
+                            {
+                                <li>@Loc.SectionTitle(section)</li>
+                            }
+                        </ol>
+                    </div>
+                }
+
+                @if (related.Count > 0)
+                {
+                    <div class="card side-card">
+                        <div class="eyebrow">@Loc.T("related_knowledge")</div>
+                        <div class="side-links">
+                            @foreach (var relatedItem in related.Take(5))
+                            {
+                                <a href="@($"/article/{relatedItem.Slug}")">@Loc.ItemTitle(relatedItem)<span>›</span></a>
+                            }
+                        </div>
+                        <a class="mini-link" href="@($"/graph/{item.Slug}")">@Loc.T("knowledge_graph") →</a>
+                    </div>
+                }
+            </aside>
+        </div>
+    </article>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    private KnowledgeItem? item;
+    private List<KnowledgeItem> related = [];
+    private bool saved;
+    private bool learned;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        item = await Knowledge.GetBySlugAsync(Slug);
+        if (item is not null)
+        {
+            saved = Bookmarks.IsSaved(item.Id);
+            learned = Progress.IsCompleted(item.Slug);
+            related = (await Knowledge.GetRelatedAsync(item)).ToList();
+        }
+    }
+
+    private bool ShouldShowBody()
+    {
+        if (item is null) return false;
+        var body = Normalize(Loc.ItemBody(item));
+        var summary = Normalize(Loc.ItemSummary(item));
+        return !string.IsNullOrWhiteSpace(body) && body != summary;
+    }
+
+    private List<KnowledgeSection> VisibleSections()
+    {
+        if (item is null) return [];
+        var summary = Normalize(Loc.ItemSummary(item));
+        var body = Normalize(Loc.ItemBody(item));
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var result = new List<KnowledgeSection>();
+        foreach (var section in item.Sections)
+        {
+            var content = Normalize(Loc.SectionContent(section));
+            if (string.IsNullOrWhiteSpace(content) || content == summary || content == body || !seen.Add(content)) continue;
+            result.Add(section);
+        }
+        return result;
+    }
+
+    private static string Normalize(string? value) => string.Join(' ', (value ?? string.Empty).Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)).Trim().ToLowerInvariant();
+
+    private void ToggleSave()
+    {
+        if (item is null) return;
+        Bookmarks.Toggle(item.Id);
+        saved = Bookmarks.IsSaved(item.Id);
+    }
+
+    private void ToggleLearned()
+    {
+        if (item is null) return;
+        Progress.ToggleLesson(item.Slug);
+        learned = Progress.IsCompleted(item.Slug);
+    }
+
+    private async Task OpenSourceAsync(string url) => await Browser.OpenAsync(url);
+    private static bool IsVerified(KnowledgeItem value) => value.EvidenceLevel == "Strong Evidence" && value.Sources.Count > 0;
+
+    private static string ArticleSymbol(KnowledgeItem value) => value.Category switch
+    {
+        "Epic Evidence" => "🏺",
+        "History" => "⌛",
+        "Philosophy" => "◉",
+        "Deities" => "ॐ",
+        "Thinkers & Acharyas" => "✦",
+        "Indian Knowledge Systems" => "✺",
+        "Verified Facts" => "✓",
+        "Garv with Proof" => "✹",
+        _ => "ॐ"
+    };
+}

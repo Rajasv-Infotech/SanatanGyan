@@ -1,0 +1,98 @@
+@page "/text/{Slug}"
+@inject ScriptureService Scriptures
+@inject LanguageService Loc
+@inject BrowserService Browser
+
+@if (text is null)
+{
+    <div class="empty-state"><div class="empty-icon">ॐ</div><p>@Loc.T("loading")</p></div>
+}
+else
+{
+    <article class="text-detail">
+        <div class="article-hero-card text-hero-card">
+            <div class="article-hero-main">
+                <div class="eyebrow">@(Loc.IsHindi ? text.CategoryHi : text.Category)</div>
+                <h1>@(Loc.IsHindi ? text.TitleHi : text.TitleEn)</h1>
+                <p class="lead">@(Loc.IsHindi ? text.DescriptionHi : text.DescriptionEn)</p>
+                <div class="chip-row">
+                    @if (text.IsMajor)
+                    {
+                        <span class="badge strong">✦ @Loc.T("major_text")</span>
+                    }
+                    <span class="chip">@(Loc.IsHindi ? text.KindHi : text.KindEn)</span>
+                </div>
+            </div>
+            <div class="article-hero-symbol scripture-hero-symbol">ॐ</div>
+        </div>
+
+        <div class="text-info-grid">
+            <div class="card info-tile"><small>@Loc.T("text_kind")</small><strong>@(Loc.IsHindi ? text.KindHi : text.KindEn)</strong></div>
+            <div class="card info-tile"><small>@Loc.T("text_language")</small><strong>@(Loc.IsHindi ? text.LanguageHi : text.LanguageEn)</strong></div>
+            <div class="card info-tile"><small>@Loc.T("text_tradition")</small><strong>@(Loc.IsHindi ? text.TraditionHi : text.TraditionEn)</strong></div>
+            <div class="card info-tile"><small>@Loc.T("text_attribution")</small><strong>@(Loc.IsHindi ? text.AttributionHi : text.AttributionEn)</strong></div>
+        </div>
+
+        <div class="text-detail-grid-v07">
+            <section class="article-section">
+                <div class="detail-section-icon">◎</div>
+                <h2>@Loc.T("what_it_contains")</h2>
+                <p>@(Loc.IsHindi ? text.KeyThemesHi : text.KeyThemesEn)</p>
+            </section>
+            <section class="article-section">
+                <div class="detail-section-icon">▤</div>
+                <h2>@Loc.T("text_structure")</h2>
+                <p>@(Loc.IsHindi ? text.StructureHi : text.StructureEn)</p>
+            </section>
+            <section class="article-section">
+                <div class="detail-section-icon">✦</div>
+                <h2>@Loc.T("why_read_this")</h2>
+                <p>@(Loc.IsHindi ? text.WhyReadHi : text.WhyReadEn)</p>
+            </section>
+            <section class="article-section">
+                <div class="detail-section-icon">☞</div>
+                <h2>@Loc.T("study_note")</h2>
+                <p>@(Loc.IsHindi ? text.StudyNoteHi : text.StudyNoteEn)</p>
+            </section>
+        </div>
+
+        <section class="article-section scripture-read-section">
+            <div class="detail-section-icon">↗</div>
+            <h2>@Loc.T("read_text_online")</h2>
+            <p>@Loc.T("read_text_online_note")</p>
+            <div class="btn-row" style="margin-top:12px">
+                @if (!string.IsNullOrWhiteSpace(text.ReadOnlineUrl))
+                {
+                    <button class="btn primary" @onclick="() => Browser.OpenAsync(text.ReadOnlineUrl)">@(Loc.IsHindi ? text.ReadOnlineLabelHi : text.ReadOnlineLabelEn) ↗</button>
+                }
+                @if (!string.IsNullOrWhiteSpace(text.ArchiveUrl))
+                {
+                    <button class="btn" @onclick="() => Browser.OpenAsync(text.ArchiveUrl)">@(Loc.IsHindi ? text.ArchiveLabelHi : text.ArchiveLabelEn) ↗</button>
+                }
+            </div>
+            <small class="external-edition-note">@Loc.T("external_edition_note")</small>
+        </section>
+
+        @if (text.Slug is "valmiki-ramayana" or "mahabharata" or "bhagavad-gita")
+        {
+            <div class="card epic-crosslink">
+                <div><div class="eyebrow">@Loc.T("epic_evidence")</div><strong>@Loc.T("connect_text_with_evidence")</strong></div>
+                <a class="btn primary" href="/epic-evidence">@Loc.T("open_evidence_hub") →</a>
+            </div>
+        }
+
+        <div class="btn-row"><a class="btn" href="/texts">← @Loc.T("texts_library")</a></div>
+    </article>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    private ScriptureInfo? text;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        text = string.IsNullOrWhiteSpace(Slug)
+            ? null
+            : await Scriptures.GetBySlugAsync(Slug);
+    }
+}

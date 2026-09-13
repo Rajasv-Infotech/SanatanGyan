@@ -1,0 +1,830 @@
+{
+  "paths": [
+    {
+      "id": "sanatan-from-zero",
+      "icon": "🕉",
+      "titleEn": "Sanatan Dharma from Zero",
+      "titleHi": "शून्य से सनातन धर्म",
+      "descriptionEn": "Build a clear foundation: Dharma, Karma, Atman, Brahman, Moksha and the map of Hindu texts.",
+      "descriptionHi": "धर्म, कर्म, आत्मन्, ब्रह्मन्, मोक्ष और हिंदू ग्रंथों के मानचित्र से मजबूत आधार बनाइए।",
+      "level": "Beginner",
+      "quizId": "quiz-sanatan-basics",
+      "lessonSlugs": [
+        "sanatan-dharma-kya-hai",
+        "dharma",
+        "karma",
+        "atman",
+        "brahman",
+        "moksha",
+        "samsara",
+        "purusharthas",
+        "shruti-aur-smriti",
+        "vedas-overview",
+        "upanishads-overview",
+        "itihasa"
+      ]
+    },
+    {
+      "id": "hindu-philosophy",
+      "icon": "🧠",
+      "titleEn": "Hindu Philosophy",
+      "titleHi": "हिंदू दर्शन",
+      "descriptionEn": "Explore the six darshanas and major Vedanta schools without flattening their differences.",
+      "descriptionHi": "छह दर्शनों और वेदांत की प्रमुख परंपराओं को उनके वास्तविक मतभेदों के साथ समझिए।",
+      "level": "Intermediate",
+      "quizId": "quiz-philosophy",
+      "lessonSlugs": [
+        "six-darshanas",
+        "nyaya",
+        "vaisheshika",
+        "samkhya",
+        "classical-yoga",
+        "purva-mimamsa",
+        "vedanta",
+        "advaita-vedanta",
+        "vishishtadvaita",
+        "dvaita-vedanta",
+        "pramana",
+        "dharma-ethics"
+      ]
+    },
+    {
+      "id": "science-and-sanatan",
+      "icon": "🔬",
+      "titleEn": "Verified Science & Indian Knowledge",
+      "titleHi": "प्रमाणित विज्ञान और भारतीय ज्ञान",
+      "descriptionEn": "Study only well-documented astronomical, mathematical, medical-history and knowledge-system facts with cited sources.",
+      "descriptionHi": "स्रोतों सहित केवल सुव्यवस्थित और दस्तावेज़ित खगोलीय, गणितीय, चिकित्सा-इतिहास और ज्ञान-परंपरा के तथ्यों का अध्ययन करें।",
+      "level": "Intermediate",
+      "quizId": "quiz-science",
+      "lessonSlugs": [
+        "fact-aryabhata-earth-rotation",
+        "fact-aryabhata-eclipses",
+        "fact-brahmagupta-zero",
+        "fact-panini-ashtadhyayi",
+        "fact-sushruta-surgery",
+        "fact-sushruta-rhinoplasty",
+        "fact-panchanga-five-limbs",
+        "fact-tithi-12-degrees",
+        "fact-nakshatra-27",
+        "fact-indian-astronomical-ephemeris"
+      ]
+    },
+    {
+      "id": "history-of-traditions",
+      "icon": "🏛",
+      "titleEn": "History of Hindu Traditions",
+      "titleHi": "हिंदू परंपराओं का इतिहास",
+      "descriptionEn": "Follow major textual, philosophical, devotional and modern developments through a cautious timeline.",
+      "descriptionHi": "प्रमुख ग्रंथीय, दार्शनिक, भक्ति और आधुनिक विकासों को सावधानीपूर्वक समयरेखा में समझिए।",
+      "level": "Beginner",
+      "quizId": "quiz-history",
+      "lessonSlugs": [
+        "vedic-textual-traditions",
+        "early-upanishadic-thought",
+        "formation-of-epic-traditions",
+        "classical-philosophical-systems",
+        "puranic-and-temple-traditions-expand",
+        "adi-shankara-and-advaita-consolidation",
+        "ramanuja-and-sri-vaishnava-theology",
+        "madhva-and-dvaita-vedanta",
+        "bhakti-movements-diversify",
+        "colonial-encounter-and-hindu-reform",
+        "vivekananda-at-chicago",
+        "global-yoga-and-diaspora-hinduism"
+      ]
+    },
+    {
+      "id": "bharatiya-knowledge",
+      "icon": "🇮🇳",
+      "titleEn": "Bharatiya Knowledge Systems",
+      "titleHi": "भारतीय ज्ञान परंपराएँ",
+      "descriptionEn": "Study mathematics, astronomy, calendrics, grammar, medicine and logic with evidence and context.",
+      "descriptionHi": "गणित, खगोल, कालगणना, व्याकरण, चिकित्सा और तर्क को प्रमाण और संदर्भ के साथ पढ़िए।",
+      "level": "Intermediate",
+      "quizId": "quiz-iks",
+      "lessonSlugs": [
+        "panini-and-sanskrit-grammar",
+        "zero-in-indian-mathematics",
+        "aryabhata",
+        "brahmagupta",
+        "indian-astronomy",
+        "aryabhata-eclipses",
+        "nakshatra-system",
+        "panchanga-five-limbs",
+        "tithi-calculation",
+        "surya-siddhanta-overview",
+        "sushruta-samhita-surgery",
+        "charaka-samhita-overview"
+      ]
+    },
+    {
+      "id": "verified-facts",
+      "icon": "🔎",
+      "titleEn": "Verified Facts & Achievements",
+      "titleHi": "प्रमाणित तथ्य और उपलब्धियाँ",
+      "descriptionEn": "A positive collection of source-backed facts about Sanatan traditions and Indian knowledge systems.",
+      "descriptionHi": "सनातन परंपराओं और भारतीय ज्ञान-परंपराओं से जुड़े स्रोत-समर्थित सकारात्मक तथ्यों का संग्रह।",
+      "level": "Advanced",
+      "quizId": "quiz-verified-facts",
+      "lessonSlugs": [
+        "fact-tkdl",
+        "fact-turmeric-patent",
+        "fact-yoga-unesco",
+        "fact-vedic-chanting-unesco",
+        "fact-international-yoga-day",
+        "fact-aryabhata-earth-rotation",
+        "fact-sushruta-surgery",
+        "fact-brahmagupta-zero",
+        "fact-panini-ashtadhyayi",
+        "fact-panchanga-five-limbs"
+      ]
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "quiz-sanatan-basics",
+      "titleEn": "Sanatan Basics Quiz",
+      "titleHi": "सनातन मूल ज्ञान क्विज़",
+      "descriptionEn": "Check your foundation after the first learning path.",
+      "descriptionHi": "पहले अध्ययन-पथ के बाद अपना आधार जाँचें।",
+      "questions": [
+        {
+          "id": "sb1",
+          "promptEn": "Which four aims are traditionally grouped as the Purusharthas?",
+          "promptHi": "परंपरागत रूप से पुरुषार्थ के चार लक्ष्य कौन-से हैं?",
+          "optionsEn": [
+            "Dharma, Artha, Kama, Moksha",
+            "Yoga, Bhakti, Jnana, Karma",
+            "Veda, Purana, Itihasa, Agama",
+            "Satya, Ahimsa, Seva, Dana"
+          ],
+          "optionsHi": [
+            "धर्म, अर्थ, काम, मोक्ष",
+            "योग, भक्ति, ज्ञान, कर्म",
+            "वेद, पुराण, इतिहास, आगम",
+            "सत्य, अहिंसा, सेवा, दान"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The four Purusharthas are Dharma, Artha, Kama and Moksha.",
+          "explanationHi": "चार पुरुषार्थ धर्म, अर्थ, काम और मोक्ष हैं।",
+          "relatedSlug": "purusharthas"
+        },
+        {
+          "id": "sb2",
+          "promptEn": "In many Hindu philosophical traditions, Atman refers most directly to what?",
+          "promptHi": "अनेक हिंदू दार्शनिक परंपराओं में आत्मन् मुख्यतः किसकी ओर संकेत करता है?",
+          "optionsEn": [
+            "The self",
+            "A temple ritual",
+            "A calendar month",
+            "A social title"
+          ],
+          "optionsHi": [
+            "स्व/आत्मा",
+            "मंदिर की पूजा-विधि",
+            "कैलेंडर का महीना",
+            "सामाजिक उपाधि"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Atman is a central term for the self, though schools interpret its nature differently.",
+          "explanationHi": "आत्मन् स्व/आत्मा का केंद्रीय दार्शनिक शब्द है, हालांकि विभिन्न दर्शन इसकी प्रकृति को अलग तरह से समझते हैं।",
+          "relatedSlug": "atman"
+        },
+        {
+          "id": "sb3",
+          "promptEn": "Which pair is commonly used to distinguish revealed Vedic authority from remembered traditional literature?",
+          "promptHi": "वैदिक श्रुति और स्मृत परंपरागत साहित्य में अंतर के लिए कौन-सा युग्म प्रयुक्त होता है?",
+          "optionsEn": [
+            "Shruti and Smriti",
+            "Raga and Tala",
+            "Rashi and Nakshatra",
+            "Artha and Kama"
+          ],
+          "optionsHi": [
+            "श्रुति और स्मृति",
+            "राग और ताल",
+            "राशि और नक्षत्र",
+            "अर्थ और काम"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Shruti and Smriti are major traditional categories of Hindu textual authority.",
+          "explanationHi": "श्रुति और स्मृति हिंदू ग्रंथ-परंपरा की प्रमुख पारंपरिक श्रेणियाँ हैं।",
+          "relatedSlug": "shruti-aur-smriti"
+        },
+        {
+          "id": "sb4",
+          "promptEn": "What does karma primarily connect in Hindu thought?",
+          "promptHi": "हिंदू चिंतन में कर्म मुख्यतः किन बातों को जोड़ता है?",
+          "optionsEn": [
+            "Action and its consequences",
+            "Only fixed destiny",
+            "Only temple ritual",
+            "Only astronomy"
+          ],
+          "optionsHi": [
+            "कर्म/क्रिया और उसके परिणाम",
+            "केवल तयशुदा भाग्य",
+            "केवल मंदिर-कर्मकांड",
+            "केवल खगोल विज्ञान"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Karma is a broad idea connecting action, intention and consequences across Hindu philosophical traditions.",
+          "explanationHi": "कर्म एक व्यापक अवधारणा है जो हिंदू दार्शनिक परंपराओं में क्रिया, अभिप्राय और परिणामों को जोड़ती है।",
+          "relatedSlug": "karma"
+        },
+        {
+          "id": "sb5",
+          "promptEn": "Moksha is most closely associated with what goal?",
+          "promptHi": "मोक्ष मुख्यतः किस लक्ष्य से जुड़ा है?",
+          "optionsEn": [
+            "Liberation from samsara",
+            "Political office",
+            "Astronomical prediction",
+            "Temple architecture"
+          ],
+          "optionsHi": [
+            "संसार-चक्र से मुक्ति",
+            "राजनीतिक पद",
+            "खगोलीय भविष्यवाणी",
+            "मंदिर वास्तुकला"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Moksha broadly refers to liberation, with different schools explaining its nature differently.",
+          "explanationHi": "मोक्ष व्यापक रूप से मुक्ति को दर्शाता है, जिसकी प्रकृति विभिन्न दर्शन अलग-अलग समझाते हैं।",
+          "relatedSlug": "moksha"
+        }
+      ]
+    },
+    {
+      "id": "quiz-philosophy",
+      "titleEn": "Hindu Philosophy Quiz",
+      "titleHi": "हिंदू दर्शन क्विज़",
+      "descriptionEn": "Review the major darshanas and Vedanta ideas.",
+      "descriptionHi": "प्रमुख दर्शनों और वेदांत के विचारों को दोहराएँ।",
+      "questions": [
+        {
+          "id": "ph1",
+          "promptEn": "Which school is especially associated with logic and epistemology?",
+          "promptHi": "तर्क और ज्ञानमीमांसा से विशेष रूप से कौन-सा दर्शन जुड़ा है?",
+          "optionsEn": [
+            "Nyaya",
+            "Samkhya",
+            "Bhakti",
+            "Agama"
+          ],
+          "optionsHi": [
+            "न्याय",
+            "सांख्य",
+            "भक्ति",
+            "आगम"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Nyaya developed sophisticated methods of reasoning and valid knowledge.",
+          "explanationHi": "न्याय दर्शन ने तर्क और वैध ज्ञान के साधनों पर विस्तृत विचार विकसित किया।",
+          "relatedSlug": "nyaya"
+        },
+        {
+          "id": "ph2",
+          "promptEn": "Samkhya is famous for distinguishing which two principles?",
+          "promptHi": "सांख्य दर्शन किन दो मूल सिद्धांतों के भेद के लिए प्रसिद्ध है?",
+          "optionsEn": [
+            "Purusha and Prakriti",
+            "Dharma and Artha",
+            "Rama and Krishna",
+            "Raga and Tala"
+          ],
+          "optionsHi": [
+            "पुरुष और प्रकृति",
+            "धर्म और अर्थ",
+            "राम और कृष्ण",
+            "राग और ताल"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Classical Samkhya distinguishes consciousness (Purusha) from material nature (Prakriti).",
+          "explanationHi": "शास्त्रीय सांख्य चेतन पुरुष और प्रकृति के भेद पर बल देता है।",
+          "relatedSlug": "samkhya"
+        },
+        {
+          "id": "ph3",
+          "promptEn": "Advaita Vedanta is most closely associated with which description?",
+          "promptHi": "अद्वैत वेदांत किस वर्णन से सबसे अधिक जुड़ा है?",
+          "optionsEn": [
+            "Non-duality",
+            "Strict dualism",
+            "Materialism only",
+            "Ritualism only"
+          ],
+          "optionsHi": [
+            "अद्वैत/अभेद",
+            "कठोर द्वैत",
+            "केवल भौतिकवाद",
+            "केवल कर्मकांड"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Advaita is a non-dual Vedanta tradition, classically associated with Shankara.",
+          "explanationHi": "अद्वैत वेदांत एक अद्वैतवादी परंपरा है, जिसका शास्त्रीय संबंध शंकराचार्य से है।",
+          "relatedSlug": "advaita-vedanta"
+        },
+        {
+          "id": "ph4",
+          "promptEn": "Does every Hindu philosophical school define Atman and Brahman in exactly the same way?",
+          "promptHi": "क्या सभी हिंदू दर्शन आत्मन् और ब्रह्मन् को बिल्कुल एक ही तरह परिभाषित करते हैं?",
+          "optionsEn": [
+            "No",
+            "Yes",
+            "Only after 1900",
+            "Only in temples"
+          ],
+          "optionsHi": [
+            "नहीं",
+            "हाँ",
+            "केवल 1900 के बाद",
+            "केवल मंदिरों में"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Hindu philosophical traditions contain real disagreements, especially among Vedanta schools.",
+          "explanationHi": "हिंदू दार्शनिक परंपराओं में वास्तविक मतभेद हैं, विशेषकर वेदांत की विभिन्न शाखाओं में।",
+          "relatedSlug": "vedanta"
+        },
+        {
+          "id": "ph5",
+          "promptEn": "What does “pramana” concern in Indian philosophy?",
+          "promptHi": "भारतीय दर्शन में “प्रमाण” किससे संबंधित है?",
+          "optionsEn": [
+            "Means of valid knowledge",
+            "Temple bells",
+            "Calendar months",
+            "Royal genealogy"
+          ],
+          "optionsHi": [
+            "वैध ज्ञान के साधन",
+            "मंदिर की घंटियाँ",
+            "कैलेंडर के महीने",
+            "राजवंशावली"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Pramana concerns accepted means or sources of valid knowledge.",
+          "explanationHi": "प्रमाण वैध ज्ञान प्राप्त करने के स्वीकृत साधनों या स्रोतों से संबंधित है।",
+          "relatedSlug": "pramana"
+        }
+      ]
+    },
+    {
+      "id": "quiz-science",
+      "titleEn": "Verified Science & Knowledge Quiz",
+      "titleHi": "प्रमाणित विज्ञान और ज्ञान क्विज़",
+      "descriptionEn": "Questions based only on the source-backed topics in this learning path.",
+      "descriptionHi": "इस अध्ययन-पथ के केवल स्रोत-समर्थित विषयों पर आधारित प्रश्न।",
+      "questions": [
+        {
+          "id": "sc1",
+          "promptEn": "According to the Aryabhatiya, what explains the apparent westward motion of the stars?",
+          "promptHi": "आर्यभटीय के अनुसार तारों की पश्चिम की ओर दिखाई देने वाली गति का कारण क्या है?",
+          "optionsEn": [
+            "Earth’s rotation",
+            "Ocean tides",
+            "Cloud motion",
+            "Seasonal winds"
+          ],
+          "optionsHi": [
+            "पृथ्वी का घूर्णन",
+            "समुद्री ज्वार",
+            "बादलों की गति",
+            "ऋतुजन्य हवाएँ"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Aryabhata explained the apparent motion using Earth’s rotation.",
+          "explanationHi": "आर्यभट ने इस आभासी गति को पृथ्वी के घूर्णन से समझाया।",
+          "relatedSlug": "fact-aryabhata-earth-rotation"
+        },
+        {
+          "id": "sc2",
+          "promptEn": "How many equal tithis divide one 360° Moon–Sun elongation cycle?",
+          "promptHi": "चंद्रमा-सूर्य के 360° कोणीय अंतर के एक चक्र को कितनी समान तिथियों में बाँटा जाता है?",
+          "optionsEn": [
+            "12",
+            "15",
+            "27",
+            "30"
+          ],
+          "optionsHi": [
+            "12",
+            "15",
+            "27",
+            "30"
+          ],
+          "correctIndex": 3,
+          "explanationEn": "The cycle is divided into 30 tithis, each spanning 12 degrees.",
+          "explanationHi": "चक्र को 30 तिथियों में बाँटा जाता है और प्रत्येक तिथि 12 अंश की होती है।",
+          "relatedSlug": "fact-tithi-12-degrees"
+        },
+        {
+          "id": "sc3",
+          "promptEn": "How many Nakshatra divisions are used in the standard Panchanga?",
+          "promptHi": "मानक पंचांग में कितने नक्षत्र-विभाग उपयोग किए जाते हैं?",
+          "optionsEn": [
+            "12",
+            "24",
+            "27",
+            "30"
+          ],
+          "optionsHi": [
+            "12",
+            "24",
+            "27",
+            "30"
+          ],
+          "correctIndex": 2,
+          "explanationEn": "The standard system uses 27 Nakshatras.",
+          "explanationHi": "मानक व्यवस्था में 27 नक्षत्र होते हैं।",
+          "relatedSlug": "fact-nakshatra-27"
+        },
+        {
+          "id": "sc4",
+          "promptEn": "Which classical text is famous for detailed surgical material?",
+          "promptHi": "कौन-सा शास्त्रीय ग्रंथ विस्तृत शल्य-चिकित्सा सामग्री के लिए प्रसिद्ध है?",
+          "optionsEn": [
+            "Sushruta Samhita",
+            "Amarakosha",
+            "Nirukta",
+            "Yoga Sutra"
+          ],
+          "optionsHi": [
+            "सुश्रुत संहिता",
+            "अमरकोश",
+            "निरुक्त",
+            "योगसूत्र"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The Sushruta Samhita contains extensive surgical material.",
+          "explanationHi": "सुश्रुत संहिता में विस्तृत शल्य-चिकित्सा सामग्री मिलती है।",
+          "relatedSlug": "fact-sushruta-surgery"
+        },
+        {
+          "id": "sc5",
+          "promptEn": "Which government body publishes the Indian Astronomical Ephemeris?",
+          "promptHi": "भारतीय खगोलीय पंचांग-सारणी किस सरकारी संस्था के अंतर्गत प्रकाशित होती है?",
+          "optionsEn": [
+            "India Meteorological Department / Positional Astronomy Centre",
+            "Archaeological Survey of India",
+            "National Archives of India",
+            "Survey of India only"
+          ],
+          "optionsHi": [
+            "भारत मौसम विज्ञान विभाग / स्थितीय खगोल विज्ञान केंद्र",
+            "भारतीय पुरातत्व सर्वेक्षण",
+            "राष्ट्रीय अभिलेखागार",
+            "केवल भारतीय सर्वेक्षण विभाग"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The Positional Astronomy Centre under the India Meteorological Department publishes it.",
+          "explanationHi": "इसे भारत मौसम विज्ञान विभाग के स्थितीय खगोल विज्ञान केंद्र द्वारा प्रकाशित किया जाता है।",
+          "relatedSlug": "fact-indian-astronomical-ephemeris"
+        }
+      ]
+    },
+    {
+      "id": "quiz-history",
+      "titleEn": "History Timeline Quiz",
+      "titleHi": "इतिहास समयरेखा क्विज़",
+      "descriptionEn": "Review the sequence of major developments.",
+      "descriptionHi": "प्रमुख ऐतिहासिक विकासों के क्रम को दोहराएँ।",
+      "questions": [
+        {
+          "id": "hi1",
+          "promptEn": "Which comes earlier in the broad academic textual sequence?",
+          "promptHi": "व्यापक अकादमिक ग्रंथीय क्रम में इनमें से क्या पहले आता है?",
+          "optionsEn": [
+            "Vedic textual traditions",
+            "Modern reform movements",
+            "Global yoga",
+            "Colonial period"
+          ],
+          "optionsHi": [
+            "वैदिक ग्रंथीय परंपराएँ",
+            "आधुनिक सुधार आंदोलन",
+            "वैश्विक योग",
+            "औपनिवेशिक काल"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Vedic textual traditions are among the earliest major layers in Hindu textual history.",
+          "explanationHi": "वैदिक ग्रंथीय परंपराएँ हिंदू ग्रंथ-इतिहास की सबसे प्राचीन प्रमुख परतों में हैं।",
+          "relatedSlug": "vedic-textual-traditions"
+        },
+        {
+          "id": "hi2",
+          "promptEn": "Who is classically associated with Advaita Vedanta consolidation?",
+          "promptHi": "अद्वैत वेदांत के शास्त्रीय सुदृढ़ीकरण से किसका नाम जुड़ा है?",
+          "optionsEn": [
+            "Adi Shankara",
+            "Ramanuja",
+            "Madhva",
+            "Panini"
+          ],
+          "optionsHi": [
+            "आदि शंकराचार्य",
+            "रामानुजाचार्य",
+            "मध्वाचार्य",
+            "पाणिनि"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Adi Shankara is the major classical figure associated with Advaita Vedanta.",
+          "explanationHi": "आदि शंकराचार्य अद्वैत वेदांत से जुड़े प्रमुख शास्त्रीय आचार्य हैं।",
+          "relatedSlug": "adi-shankara-and-advaita-consolidation"
+        },
+        {
+          "id": "hi3",
+          "promptEn": "Which movement greatly diversified devotional literature in regional languages?",
+          "promptHi": "क्षेत्रीय भाषाओं में भक्तिमय साहित्य को व्यापक रूप से विविध बनाने वाले आंदोलनों को क्या कहा जाता है?",
+          "optionsEn": [
+            "Bhakti movements",
+            "Only Nyaya debates",
+            "Only Vedic ritual",
+            "Modern astronomy"
+          ],
+          "optionsHi": [
+            "भक्ति आंदोलन",
+            "केवल न्याय-विवाद",
+            "केवल वैदिक कर्मकांड",
+            "आधुनिक खगोल विज्ञान"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Bhakti movements produced major devotional traditions in many regions and languages.",
+          "explanationHi": "भक्ति आंदोलनों ने अनेक क्षेत्रों और भाषाओं में महत्वपूर्ण भक्तिमय परंपराएँ विकसित कीं।",
+          "relatedSlug": "bhakti-movements-diversify"
+        },
+        {
+          "id": "hi4",
+          "promptEn": "How does this app present traditional chronology alongside historical study?",
+          "promptHi": "यह ऐप पारंपरिक कालक्रम और ऐतिहासिक अध्ययन को कैसे प्रस्तुत करता है?",
+          "optionsEn": [
+            "With clear labels for each perspective",
+            "By merging every date into one",
+            "By hiding traditional chronology",
+            "By showing no history"
+          ],
+          "optionsHi": [
+            "दोनों दृष्टियों को स्पष्ट लेबल के साथ",
+            "हर तिथि को एक में मिलाकर",
+            "पारंपरिक कालक्रम छिपाकर",
+            "इतिहास दिखाए बिना"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Clear labels let readers appreciate traditional chronology and historical scholarship in their own contexts.",
+          "explanationHi": "स्पष्ट लेबल पाठक को पारंपरिक कालक्रम और ऐतिहासिक अध्ययन दोनों को उनके अपने संदर्भ में समझने देते हैं।",
+          "relatedSlug": "formation-of-epic-traditions"
+        },
+        {
+          "id": "hi5",
+          "promptEn": "Vivekananda’s 1893 Chicago appearance belongs to which broad period?",
+          "promptHi": "विवेकानंद का 1893 का शिकागो भाषण किस व्यापक काल से जुड़ा है?",
+          "optionsEn": [
+            "Colonial/modern reform era",
+            "Early Vedic period",
+            "Gupta period only",
+            "Prehistoric period"
+          ],
+          "optionsHi": [
+            "औपनिवेशिक/आधुनिक सुधार काल",
+            "प्रारंभिक वैदिक काल",
+            "केवल गुप्त काल",
+            "प्रागैतिहासिक काल"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The 1893 Chicago Parliament belongs to the modern colonial-era history of Hindu reform and global presentation.",
+          "explanationHi": "1893 का शिकागो धर्म संसद प्रसंग आधुनिक औपनिवेशिक काल के हिंदू सुधार और वैश्विक प्रस्तुति के इतिहास से जुड़ा है।",
+          "relatedSlug": "vivekananda-at-chicago"
+        }
+      ]
+    },
+    {
+      "id": "quiz-iks",
+      "titleEn": "Bharatiya Knowledge Systems Quiz",
+      "titleHi": "भारतीय ज्ञान परंपरा क्विज़",
+      "descriptionEn": "Test key facts from astronomy, mathematics, grammar and medicine.",
+      "descriptionHi": "खगोल, गणित, व्याकरण और चिकित्सा के प्रमुख तथ्यों को जाँचें।",
+      "questions": [
+        {
+          "id": "ik1",
+          "promptEn": "Who is strongly associated with the Ashtadhyayi grammatical tradition?",
+          "promptHi": "अष्टाध्यायी की व्याकरण-परंपरा से किसका नाम प्रमुख रूप से जुड़ा है?",
+          "optionsEn": [
+            "Panini",
+            "Sushruta",
+            "Aryabhata",
+            "Charaka"
+          ],
+          "optionsHi": [
+            "पाणिनि",
+            "सुश्रुत",
+            "आर्यभट",
+            "चरक"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Panini’s Ashtadhyayi is a landmark work in Sanskrit grammatical analysis.",
+          "explanationHi": "पाणिनि की अष्टाध्यायी संस्कृत व्याकरण-विश्लेषण की अत्यंत महत्वपूर्ण रचना है।",
+          "relatedSlug": "panini-and-sanskrit-grammar"
+        },
+        {
+          "id": "ik2",
+          "promptEn": "Aryabhata explicitly discussed which motion of Earth?",
+          "promptHi": "आर्यभट ने पृथ्वी की किस गति पर स्पष्ट चर्चा की?",
+          "optionsEn": [
+            "Rotation on its axis",
+            "A modern spacecraft orbit",
+            "Plate tectonics",
+            "Continental drift"
+          ],
+          "optionsHi": [
+            "अपनी धुरी पर घूर्णन",
+            "आधुनिक अंतरिक्षयान की कक्षा",
+            "प्लेट विवर्तनिकी",
+            "महाद्वीपीय विस्थापन"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Aryabhata described Earth’s axial rotation; that should not be exaggerated into every modern astronomical model.",
+          "explanationHi": "आर्यभट ने पृथ्वी के अक्षीय घूर्णन का वर्णन किया; इसे हर आधुनिक खगोलीय मॉडल के बराबर नहीं मानना चाहिए।",
+          "relatedSlug": "aryabhata-earth-rotation"
+        },
+        {
+          "id": "ik3",
+          "promptEn": "What are the five traditional limbs of a Panchanga?",
+          "promptHi": "पंचांग के पाँच पारंपरिक अंग कौन-से हैं?",
+          "optionsEn": [
+            "Tithi, Vara, Nakshatra, Yoga, Karana",
+            "Earth, Water, Fire, Air, Space",
+            "Dharma, Artha, Kama, Moksha, Yoga",
+            "Raga, Tala, Laya, Shruti, Swara"
+          ],
+          "optionsHi": [
+            "तिथि, वार, नक्षत्र, योग, करण",
+            "पृथ्वी, जल, अग्नि, वायु, आकाश",
+            "धर्म, अर्थ, काम, मोक्ष, योग",
+            "राग, ताल, लय, श्रुति, स्वर"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "Panchanga literally organizes five calendrical elements: tithi, vara, nakshatra, yoga and karana.",
+          "explanationHi": "पंचांग में तिथि, वार, नक्षत्र, योग और करण पाँच प्रमुख कालगणना-अंग हैं।",
+          "relatedSlug": "panchanga-five-limbs"
+        },
+        {
+          "id": "ik4",
+          "promptEn": "A tithi is based primarily on what angular relationship?",
+          "promptHi": "तिथि मुख्यतः किस कोणीय संबंध पर आधारित होती है?",
+          "optionsEn": [
+            "The changing angular separation of Moon and Sun",
+            "Earth’s distance from Mars only",
+            "Temple latitude only",
+            "The alphabet order"
+          ],
+          "optionsHi": [
+            "चंद्रमा और सूर्य के बदलते कोणीय अंतर पर",
+            "केवल पृथ्वी-मंगल दूरी पर",
+            "केवल मंदिर के अक्षांश पर",
+            "वर्णमाला के क्रम पर"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "A tithi corresponds to each 12-degree increment in the Moon-Sun elongation cycle.",
+          "explanationHi": "चंद्र-सूर्य कोणीय अंतर में प्रत्येक 12 डिग्री की वृद्धि एक तिथि से संबंधित होती है।",
+          "relatedSlug": "tithi-calculation"
+        },
+        {
+          "id": "ik5",
+          "promptEn": "The Sushruta Samhita is historically important especially for which field?",
+          "promptHi": "सुश्रुत संहिता ऐतिहासिक रूप से विशेषकर किस क्षेत्र के लिए महत्वपूर्ण है?",
+          "optionsEn": [
+            "Surgical and medical tradition",
+            "Modern quantum computing",
+            "Steam engines",
+            "Radio communication"
+          ],
+          "optionsHi": [
+            "शल्य और चिकित्सा परंपरा",
+            "आधुनिक क्वांटम कंप्यूटिंग",
+            "भाप इंजन",
+            "रेडियो संचार"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The Sushruta tradition contains extensive material on surgery, instruments, anatomy and medical training.",
+          "explanationHi": "सुश्रुत परंपरा में शल्य चिकित्सा, उपकरण, शरीररचना और चिकित्सा-प्रशिक्षण पर विस्तृत सामग्री मिलती है।",
+          "relatedSlug": "sushruta-samhita-surgery"
+        }
+      ]
+    },
+    {
+      "id": "quiz-verified-facts",
+      "titleEn": "Verified Facts Quiz",
+      "titleHi": "प्रमाणित तथ्य क्विज़",
+      "descriptionEn": "A source-backed review of documented achievements and recognitions.",
+      "descriptionHi": "दस्तावेज़ित उपलब्धियों और मान्यताओं की स्रोत-समर्थित पुनरावृत्ति।",
+      "questions": [
+        {
+          "id": "vf1",
+          "promptEn": "In which year did UNESCO inscribe Yoga on the Representative List of Intangible Cultural Heritage?",
+          "promptHi": "यूनेस्को ने योग को अमूर्त सांस्कृतिक विरासत की प्रतिनिधि सूची में किस वर्ष अंकित किया?",
+          "optionsEn": [
+            "2008",
+            "2014",
+            "2016",
+            "2021"
+          ],
+          "optionsHi": [
+            "2008",
+            "2014",
+            "2016",
+            "2021"
+          ],
+          "correctIndex": 2,
+          "explanationEn": "Yoga was inscribed in 2016.",
+          "explanationHi": "योग को 2016 में अंकित किया गया।",
+          "relatedSlug": "fact-yoga-unesco"
+        },
+        {
+          "id": "vf2",
+          "promptEn": "Which date is observed by the United Nations as International Day of Yoga?",
+          "promptHi": "संयुक्त राष्ट्र किस तारीख को अंतरराष्ट्रीय योग दिवस मनाता है?",
+          "optionsEn": [
+            "21 March",
+            "21 June",
+            "15 August",
+            "2 October"
+          ],
+          "optionsHi": [
+            "21 मार्च",
+            "21 जून",
+            "15 अगस्त",
+            "2 अक्टूबर"
+          ],
+          "correctIndex": 1,
+          "explanationEn": "The United Nations observes International Day of Yoga on 21 June.",
+          "explanationHi": "संयुक्त राष्ट्र 21 जून को अंतरराष्ट्रीय योग दिवस मनाता है।",
+          "relatedSlug": "fact-international-yoga-day"
+        },
+        {
+          "id": "vf3",
+          "promptEn": "What was the purpose of India’s TKDL?",
+          "promptHi": "भारत की पारंपरिक ज्ञान डिजिटल लाइब्रेरी का प्रमुख उद्देश्य क्या है?",
+          "optionsEn": [
+            "Document traditional knowledge for prior-art searches",
+            "Replace all Sanskrit manuscripts",
+            "Issue medical prescriptions",
+            "Publish school textbooks"
+          ],
+          "optionsHi": [
+            "पारंपरिक ज्ञान को पूर्व-कला खोज के लिए दस्तावेज़ित करना",
+            "सभी संस्कृत पांडुलिपियों को बदलना",
+            "चिकित्सीय पर्चे जारी करना",
+            "विद्यालयी पाठ्यपुस्तकें प्रकाशित करना"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "TKDL makes documented traditional knowledge usable in patent prior-art searches.",
+          "explanationHi": "यह पारंपरिक ज्ञान को पेटेंट की पूर्व-कला खोज में उपयोग योग्य रूप में दस्तावेज़ित करती है।",
+          "relatedSlug": "fact-tkdl"
+        },
+        {
+          "id": "vf4",
+          "promptEn": "Which work contains Brahmagupta’s arithmetic rules involving zero?",
+          "promptHi": "ब्रह्मगुप्त के शून्य संबंधी अंकगणितीय नियम किस ग्रंथ में मिलते हैं?",
+          "optionsEn": [
+            "Brahmasphutasiddhanta",
+            "Arthashastra",
+            "Natyashastra",
+            "Ashtadhyayi"
+          ],
+          "optionsHi": [
+            "ब्रह्मस्फुटसिद्धांत",
+            "अर्थशास्त्र",
+            "नाट्यशास्त्र",
+            "अष्टाध्यायी"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The Brahmasphutasiddhanta contains explicit arithmetic rules involving zero.",
+          "explanationHi": "ब्रह्मस्फुटसिद्धांत में शून्य के साथ अंकगणित के स्पष्ट नियम मिलते हैं।",
+          "relatedSlug": "fact-brahmagupta-zero"
+        },
+        {
+          "id": "vf5",
+          "promptEn": "Which tradition did UNESCO inscribe on its Representative List in 2008?",
+          "promptHi": "यूनेस्को ने 2008 में किस परंपरा को अपनी प्रतिनिधि सूची में अंकित किया?",
+          "optionsEn": [
+            "Tradition of Vedic chanting",
+            "International Day of Yoga",
+            "TKDL",
+            "Indian Astronomical Ephemeris"
+          ],
+          "optionsHi": [
+            "वैदिक मंत्रोच्चार की परंपरा",
+            "अंतरराष्ट्रीय योग दिवस",
+            "पारंपरिक ज्ञान डिजिटल लाइब्रेरी",
+            "भारतीय खगोलीय पंचांग-सारणी"
+          ],
+          "correctIndex": 0,
+          "explanationEn": "The Tradition of Vedic Chanting was inscribed in 2008.",
+          "explanationHi": "वैदिक मंत्रोच्चार की परंपरा 2008 में अंकित हुई।",
+          "relatedSlug": "fact-vedic-chanting-unesco"
+        }
+      ]
+    }
+  ]
+}

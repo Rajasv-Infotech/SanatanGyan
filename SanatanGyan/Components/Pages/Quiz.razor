@@ -1,0 +1,130 @@
+@page "/quiz/{Id}"
+@inject LearningService Learning
+@inject LearningProgressService Progress
+@inject LanguageService Loc
+
+@if (quiz is null)
+{
+    <div class="empty-state"><div class="empty-icon">?</div><p>@Loc.T("loading")</p></div>
+}
+else if (finished)
+{
+    <div class="quiz-result card">
+        <div class="result-ring">@(scorePercent)%</div>
+        <div class="eyebrow">@Loc.T("quiz_complete")</div>
+        <h1>@(Loc.IsHindi ? quiz.TitleHi : quiz.TitleEn)</h1>
+        <p>@score / @quiz.Questions.Count @Loc.T("correct")</p>
+        <div class="btn-row">
+            <button class="btn primary" @onclick="Restart">@Loc.T("try_again")</button>
+            <a class="btn" href="/learn">@Loc.T("courses")</a>
+        </div>
+    </div>
+}
+else if (quiz.Questions.Count > 0)
+{
+    var q = quiz.Questions[currentIndex];
+    var options = Loc.IsHindi ? q.OptionsHi : q.OptionsEn;
+    var quizPct = (currentIndex + 1) * 100 / quiz.Questions.Count;
+    <div class="quiz-head">
+        <div class="eyebrow">@Loc.T("quiz")</div>
+        <h1>@(Loc.IsHindi ? quiz.TitleHi : quiz.TitleEn)</h1>
+        <p>@Loc.T("question") @(currentIndex + 1) @Loc.T("of") @quiz.Questions.Count</p>
+        <div class="progress-track"><span style="width:@quizPct%"></span></div>
+    </div>
+
+    <div class="quiz-card card">
+        <h2>@(Loc.IsHindi ? q.PromptHi : q.PromptEn)</h2>
+        <div class="quiz-options">
+            @for (var i = 0; i < options.Count; i++)
+            {
+                var optionIndex = i;
+                var optionClass = OptionClass(optionIndex, q.CorrectIndex);
+                <button class="quiz-option @optionClass" disabled="@checkedAnswer" @onclick="() => SelectOption(optionIndex)">
+                    <span class="option-letter">@((char)('A' + optionIndex))</span>
+                    <span>@options[optionIndex]</span>
+                </button>
+            }
+        </div>
+
+        @if (!checkedAnswer)
+        {
+            <button class="btn primary" disabled="@(selectedIndex is null)" @onclick="CheckAnswer">@Loc.T("check_answer")</button>
+        }
+        else
+        {
+            var isCorrect = selectedIndex == q.CorrectIndex;
+            <div class="answer-feedback @(isCorrect ? "correct" : "incorrect")">
+                <strong>@(isCorrect ? $"✓ {Loc.T("correct")}" : $"✕ {Loc.T("incorrect")}")</strong>
+                <p>@(Loc.IsHindi ? q.ExplanationHi : q.ExplanationEn)</p>
+                @if (!string.IsNullOrWhiteSpace(q.RelatedSlug))
+                {
+                    <a href="@($"/article/{q.RelatedSlug}")">@Loc.T("review_topic") →</a>
+                }
+            </div>
+            <button class="btn primary" @onclick="NextQuestion">@(currentIndex == quiz.Questions.Count - 1 ? Loc.T("finish_quiz") : Loc.T("next_question"))</button>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+    private QuizDefinition? quiz;
+    private int currentIndex;
+    private int? selectedIndex;
+    private bool checkedAnswer;
+    private int score;
+    private bool finished;
+    private int scorePercent;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        quiz = await Learning.GetQuizAsync(Id);
+        Restart();
+    }
+
+    private void SelectOption(int index)
+    {
+        if (!checkedAnswer) selectedIndex = index;
+    }
+
+    private void CheckAnswer()
+    {
+        if (quiz is null || selectedIndex is null || checkedAnswer) return;
+        checkedAnswer = true;
+        if (selectedIndex == quiz.Questions[currentIndex].CorrectIndex) score++;
+    }
+
+    private void NextQuestion()
+    {
+        if (quiz is null || !checkedAnswer) return;
+        if (currentIndex >= quiz.Questions.Count - 1)
+        {
+            finished = true;
+            scorePercent = quiz.Questions.Count == 0 ? 0 : (int)Math.Round(100d * score / quiz.Questions.Count);
+            Progress.SaveQuizScore(quiz.Id, scorePercent);
+            return;
+        }
+
+        currentIndex++;
+        selectedIndex = null;
+        checkedAnswer = false;
+    }
+
+    private void Restart()
+    {
+        currentIndex = 0;
+        selectedIndex = null;
+        checkedAnswer = false;
+        score = 0;
+        finished = false;
+        scorePercent = 0;
+    }
+
+    private string OptionClass(int index, int correctIndex)
+    {
+        if (!checkedAnswer) return selectedIndex == index ? "selected" : string.Empty;
+        if (index == correctIndex) return "correct";
+        if (selectedIndex == index) return "wrong";
+        return string.Empty;
+    }
+}

@@ -1,0 +1,18 @@
+SANATAN GYAN v0.7.6 - APK COMMAND
+
+Run these commands from the folder that contains SanatanGyan.sln:
+
+dotnet workload restore SanatanGyan\SanatanGyan.csproj
+
+dotnet restore SanatanGyan\SanatanGyan.csproj
+
+dotnet build SanatanGyan\SanatanGyan.csproj -f net10.0-android -c Release -p:Platform=AnyCPU -t:SignAndroidPackage -p:AndroidPackageFormats=apk -p:AndroidKeyStore=false -p:AndroidUseApkSigner=true --no-restore
+
+IMPORTANT:
+- Do not pass -p:TargetFramework=net10.0-android to the RESTORE command.
+- Do not pass AndroidManifest manually.
+- The full restore keeps both Android and Windows entries in obj\project.assets.json,
+  so Visual Studio can still launch Windows Machine afterward.
+
+Build-APK.bat copies the final local-test APK to:
+artifacts\android\SanatanGyan-v0.7.6-LocalTest.apk

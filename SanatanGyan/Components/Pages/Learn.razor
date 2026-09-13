@@ -1,0 +1,73 @@
+@page "/learn"
+@inject LearningService Learning
+@inject LearningProgressService Progress
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<h1>@Loc.T("learn_title")</h1>
+<p class="lead">@Loc.T("learn_desc")</p>
+
+<div class="learning-summary card">
+    <div>
+        <div class="eyebrow">@Loc.T("learning_progress")</div>
+        <h2>@totalCompleted / @totalLessons @Loc.T("lessons_completed")</h2>
+    </div>
+    <div class="progress-track large"><span style="width:@overallPercent%"></span></div>
+</div>
+
+<div class="grid learning-grid">
+    @foreach (var path in paths)
+    {
+        var done = Progress.CompletedCount(path.LessonSlugs);
+        var total = path.LessonSlugs.Count;
+        var pct = total == 0 ? 0 : (int)Math.Round(100d * done / total);
+        var best = string.IsNullOrWhiteSpace(path.QuizId) ? null : Progress.BestQuizScore(path.QuizId);
+        <a class="card category-card learning-card" href="@($"/course/{path.Id}")">
+            <div class="learning-card-top">
+                <div class="category-icon">@path.Icon</div>
+                <span class="chip">@Loc.Level(path.Level)</span>
+            </div>
+            <h3>@(Loc.IsHindi ? path.TitleHi : path.TitleEn)</h3>
+            <p>@(Loc.IsHindi ? path.DescriptionHi : path.DescriptionEn)</p>
+            <div class="progress-track"><span style="width:@pct%"></span></div>
+            <div class="course-meta">
+                <span>@done / @total @Loc.T("lessons")</span>
+                @if (best is not null)
+                {
+                    <span>@Loc.T("best_score"): @(best)%</span>
+                }
+            </div>
+        </a>
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("start_here")</h2><a href="/course/sanatan-from-zero">@Loc.T("start_course")</a></div>
+<div class="article-list">
+    @foreach (var item in basics.Take(8))
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+@code {
+    private List<LearningPathDefinition> paths = [];
+    private List<KnowledgeItem> basics = [];
+    private int totalCompleted;
+    private int totalLessons;
+    private int overallPercent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        paths = (await Learning.GetPathsAsync()).ToList();
+        basics = (await Knowledge.GetByCategoryAsync("Sanatan Basics")).ToList();
+        Recalculate();
+    }
+
+    private void Recalculate()
+    {
+        var slugs = paths.SelectMany(x => x.LessonSlugs).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        totalLessons = slugs.Count;
+        totalCompleted = Progress.CompletedCount(slugs);
+        overallPercent = totalLessons == 0 ? 0 : (int)Math.Round(100d * totalCompleted / totalLessons);
+    }
+}

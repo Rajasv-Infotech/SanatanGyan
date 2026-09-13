@@ -1,0 +1,79 @@
+@page "/timeline"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<div class="page-hero timeline-hero">
+    <div>
+        <div class="eyebrow">@Loc.T("history_timeline")</div>
+        <h1>@Loc.T("history_timeline")</h1>
+        <p>@Loc.T("timeline_desc_v07")</p>
+    </div>
+    <div class="hero-symbol">⌛</div>
+</div>
+
+<div class="timeline-legend">
+    <span><i class="legend-dot sacred"></i>@Loc.T("sacred_chronology")</span>
+    <span><i class="legend-dot history"></i>@Loc.T("historical_textual_timeline")</span>
+    <a href="/epic-evidence">🏺 @Loc.T("epic_evidence")</a>
+</div>
+
+<section class="timeline-panel sacred-panel">
+    <div class="section-head compact-head">
+        <div><div class="eyebrow">@Loc.T("traditional_timeline")</div><h2>@Loc.T("sacred_chronology")</h2></div>
+    </div>
+    <p class="timeline-intro">@Loc.T("sacred_timeline_desc")</p>
+    <div class="sacred-era-grid">
+        @foreach (var item in sacred)
+        {
+            <a class="sacred-era-card" href="@($"/article/{item.Slug}")">
+                <span class="era-symbol">@(item.Slug.Contains("ramayana") ? "🏹" : "🪶")</span>
+                <div>
+                    <div class="eyebrow">@Loc.DateLabel(item.DateLabel)</div>
+                    <h3>@Loc.ItemTitle(item)</h3>
+                    <p>@Loc.ItemSummary(item)</p>
+                </div>
+                <span class="era-arrow">›</span>
+            </a>
+        }
+    </div>
+</section>
+
+<section class="timeline-panel">
+    <div class="section-head compact-head">
+        <div><div class="eyebrow">@Loc.T("academic_history")</div><h2>@Loc.T("historical_textual_timeline")</h2></div>
+    </div>
+    <p class="timeline-intro">@Loc.T("historical_timeline_desc")</p>
+    <div class="timeline modern-timeline">
+        @foreach (var item in historical)
+        {
+            <div class="timeline-item">
+                <div class="date">@Loc.DateLabel(item.DateLabel)</div>
+                <h3><a href="@($"/article/{item.Slug}")">@Loc.ItemTitle(item)</a></h3>
+                <p>@Loc.ItemSummary(item)</p>
+            </div>
+        }
+    </div>
+</section>
+
+<div class="notice evidence-note"><strong>@Loc.T("important"):</strong> @Loc.T("timeline_integrity_note")</div>
+
+@code {
+    private List<KnowledgeItem> sacred = [];
+    private List<KnowledgeItem> historical = [];
+    private readonly string[] sacredOrder = ["traditional-ramayana-era", "traditional-mahabharata-era"];
+    private readonly string[] historyOrder = [
+        "vedic-textual-traditions", "early-upanishadic-thought", "formation-of-epic-traditions",
+        "classical-dharmashastra-development", "classical-philosophical-systems", "classical-sanskrit-knowledge-culture",
+        "puranic-and-temple-traditions-expand", "south-indian-bhakti-traditions", "adi-shankara-and-advaita-consolidation",
+        "ramanuja-and-sri-vaishnava-theology", "madhva-and-dvaita-vedanta", "temple-networks-and-pilgrimage",
+        "bhakti-movements-diversify", "early-modern-bhakti-literature", "colonial-encounter-and-hindu-reform",
+        "vivekananda-at-chicago", "indian-independence-and-constitutional-era", "global-yoga-and-diaspora-hinduism", "saka-calendar"
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var all = (await Knowledge.GetAllAsync()).ToDictionary(x => x.Slug, StringComparer.OrdinalIgnoreCase);
+        sacred = sacredOrder.Where(all.ContainsKey).Select(x => all[x]).ToList();
+        historical = historyOrder.Where(all.ContainsKey).Select(x => all[x]).ToList();
+    }
+}

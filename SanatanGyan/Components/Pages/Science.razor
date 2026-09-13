@@ -1,0 +1,35 @@
+@page "/science"
+@inject KnowledgeService Knowledge
+@inject LanguageService Loc
+
+<h1>@Loc.T("science_title")</h1>
+<p class="lead">@Loc.T("science_desc")</p>
+<div class="chip-row"><span class="badge strong">✓ @Loc.T("verified_only")</span></div>
+<div class="article-list">
+    @foreach (var item in science)
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+@code {
+    private static readonly HashSet<string> ScientificFacts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "fact-aryabhata-earth-rotation", "fact-aryabhata-eclipses", "fact-sushruta-surgery",
+        "fact-sushruta-rhinoplasty", "fact-brahmagupta-zero", "fact-panini-ashtadhyayi",
+        "fact-panchanga-five-limbs", "fact-tithi-12-degrees", "fact-nakshatra-27",
+        "fact-indian-astronomical-ephemeris"
+    };
+
+    private List<KnowledgeItem> science = [];
+    protected override async Task OnInitializedAsync()
+    {
+        science = (await Knowledge.GetAllAsync())
+            .Where(x => ScientificFacts.Contains(x.Slug) && IsVerified(x))
+            .OrderBy(x => Loc.ItemTitle(x))
+            .ToList();
+    }
+
+    private static bool IsVerified(KnowledgeItem item) =>
+        item.EvidenceLevel == "Strong Evidence" && item.Sources.Count > 0;
+}

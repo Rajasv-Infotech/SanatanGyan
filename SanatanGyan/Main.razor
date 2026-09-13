@@ -1,0 +1,16 @@
+@inject LanguageService Loc
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(Components.Layout.MainLayout)">
+            <div class="empty-state">
+                <div class="empty-icon">ॐ</div>
+                <h2>@Loc.T("page_not_found")</h2>
+                <a class="btn primary" href="/">@Loc.T("go_home")</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

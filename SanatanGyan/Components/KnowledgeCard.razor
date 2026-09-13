@@ -1,0 +1,16 @@
+@inject LanguageService Loc
+<a class="article-row" href="@($"/article/{Item.Slug}")">
+    <div class="eyebrow">@Loc.Category(Item.Category) · @Loc.Level(Item.Level)</div>
+    <h3>@Loc.ItemTitle(Item)</h3>
+    <p>@Loc.ItemSummary(Item)</p>
+    @if (IsVerified(Item))
+    {
+        <div class="chip-row"><span class="badge strong">✓ @Loc.Evidence("Strong Evidence")</span></div>
+    }
+</a>
+
+@code {
+    [Parameter, EditorRequired] public KnowledgeItem Item { get; set; } = default!;
+    private static bool IsVerified(KnowledgeItem item) =>
+        string.Equals(item.EvidenceLevel, "Strong Evidence", StringComparison.OrdinalIgnoreCase) && item.Sources.Count > 0;
+}

@@ -1,0 +1,159 @@
+@page "/"
+@inject KnowledgeService Knowledge
+@inject DailySanatanService Daily
+@inject NavigationManager Nav
+@inject LanguageService Loc
+
+<div class="hero">
+    <div class="eyebrow" style="color:#f4cda5">@Loc.T("sanatan_knowledge")</div>
+    <h1>@Loc.T("app_tagline")</h1>
+    <p>@Loc.T("hero_description")</p>
+    <div class="search-hero">
+        <input @bind="query" @bind:event="oninput" @onkeydown="OnSearchKey" placeholder="@Loc.T("search_placeholder")" />
+        <button class="btn primary" @onclick="GoSearch">@Loc.T("search")</button>
+    </div>
+</div>
+
+<div class="stat-row">
+    <div class="stat"><strong>@items.Count</strong><small>@Loc.T("knowledge_entries")</small></div>
+    <div class="stat"><strong>@items.Select(x => x.Category).Distinct().Count()</strong><small>@Loc.T("knowledge_worlds")</small></div>
+    <div class="stat"><strong>100%</strong><small>@Loc.T("offline_first")</small></div>
+</div>
+
+@if (today is not null)
+{
+    <a class="today-banner" href="/today">
+        <div class="today-banner-icon">☀</div>
+        <div class="today-banner-main">
+            <div class="eyebrow">@Loc.T("today_sanatan")</div>
+            <strong>@DailySanatanService.FormatDate(today.Date, Loc.IsHindi)</strong>
+            <small>@Loc.T("vara"): @(Loc.IsHindi ? today.VaraHi : today.VaraEn) · @Loc.T("daily_knowledge"): @(today.Knowledge is null ? "—" : Loc.ItemTitle(today.Knowledge!))</small>
+        </div>
+        <span class="today-banner-arrow">›</span>
+    </a>
+}
+
+<div class="home-spotlight-grid">
+    <a class="home-spotlight epic-spotlight" href="/epic-evidence">
+        <div class="spotlight-icon">🏹</div>
+        <div><div class="eyebrow">@Loc.T("new_in_v07")</div><h3>@Loc.T("epic_evidence_title")</h3><p>@Loc.T("epic_evidence_home_desc")</p></div>
+        <span class="spotlight-arrow">›</span>
+    </a>
+    <a class="home-spotlight texts-spotlight" href="/texts">
+        <div class="spotlight-icon">📜</div>
+        <div><div class="eyebrow">@Loc.T("deep_study")</div><h3>@Loc.T("texts_library")</h3><p>@Loc.T("texts_home_desc")</p></div>
+        <span class="spotlight-arrow">›</span>
+    </a>
+</div>
+
+<div class="section-head"><h2>@Loc.T("explore_sanatan")</h2><a href="/explore">@Loc.T("view_all")</a></div>
+<div class="grid">
+    @foreach (var c in Categories)
+    {
+        <a class="card category-card" href="@c.Url">
+            <div class="category-icon">@c.Icon</div>
+            <h3>@(c.IsCategory ? Loc.Category(c.Name) : Loc.T(c.Name))</h3>
+            <p>@(Loc.IsHindi ? c.DescriptionHi : c.DescriptionEn)</p>
+        </a>
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("garv_with_proof")</h2><a href="/pride">@Loc.T("view_all")</a></div>
+<div class="feature-strip">
+    @foreach (var item in VerifiedPride.Take(5))
+    {
+        <div class="card feature-card">
+            <div class="eyebrow">@Loc.T("verified_heritage")</div>
+            <h3>@Loc.ItemTitle(item)</h3>
+            <p>@Loc.ItemSummary(item)</p>
+            <div style="margin-top:12px"><a class="btn" href="@($"/article/{item.Slug}")">@Loc.T("read")</a></div>
+        </div>
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("science_research")</h2><a href="/science">@Loc.T("explore")</a></div>
+<div class="article-list">
+    @foreach (var item in VerifiedScience.Take(4))
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("verified_facts")</h2><a href="/facts">@Loc.T("view_all")</a></div>
+<div class="article-list">
+    @foreach (var item in VerifiedFacts.Take(4))
+    {
+        <KnowledgeCard Item="item" />
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("sacred_chronology")</h2><a href="/timeline">@Loc.T("open_timeline")</a></div>
+<div class="home-era-strip">
+    @foreach (var era in SacredEras)
+    {
+        <a class="home-era-card" href="@($"/article/{era.Slug}")">
+            <span class="home-era-icon">@(era.Slug.Contains("ramayana") ? "🏹" : "🪶")</span>
+            <div><div class="eyebrow">@Loc.DateLabel(era.DateLabel)</div><strong>@Loc.ItemTitle(era)</strong><p>@Loc.ItemSummary(era)</p></div>
+            <b>›</b>
+        </a>
+    }
+</div>
+
+<div class="section-head"><h2>@Loc.T("history_timeline")</h2><a href="/timeline">@Loc.T("open_timeline")</a></div>
+<div class="card">
+    <div class="timeline">
+        @foreach (var item in items.Where(x => x.Category == "History").Where(x => !string.IsNullOrWhiteSpace(x.DateLabel)).Take(4))
+        {
+            <div class="timeline-item">
+                <div class="date">@Loc.DateLabel(item.DateLabel)</div>
+                <h3><a href="@($"/article/{item.Slug}")">@Loc.ItemTitle(item)</a></h3>
+                <p>@Loc.ItemSummary(item)</p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private static readonly HashSet<string> ScientificFacts = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "fact-aryabhata-earth-rotation", "fact-aryabhata-eclipses", "fact-sushruta-surgery",
+        "fact-sushruta-rhinoplasty", "fact-brahmagupta-zero", "fact-panini-ashtadhyayi",
+        "fact-panchanga-five-limbs", "fact-tithi-12-degrees", "fact-nakshatra-27",
+        "fact-indian-astronomical-ephemeris"
+    };
+
+    private List<KnowledgeItem> items = [];
+    private DailySanatanSnapshot? today;
+    private string query = string.Empty;
+
+    private IEnumerable<KnowledgeItem> VerifiedPride => items.Where(x => x.Category == "Garv with Proof" && IsVerified(x));
+    private IEnumerable<KnowledgeItem> VerifiedFacts => items.Where(x => x.Category == "Verified Facts" && IsVerified(x));
+    private IEnumerable<KnowledgeItem> VerifiedScience => items.Where(x => ScientificFacts.Contains(x.Slug) && IsVerified(x));
+    private IEnumerable<KnowledgeItem> SacredEras => items.Where(x => x.Slug is "traditional-ramayana-era" or "traditional-mahabharata-era");
+
+    private readonly (string Icon,string Name,string DescriptionEn,string DescriptionHi,string Url,bool IsCategory)[] Categories =
+    [
+        ("🕉", "Sanatan Basics", "Dharma, Karma, Atman, Moksha and foundations", "धर्म, कर्म, आत्मन्, मोक्ष और मूल अवधारणाएँ", "/explore?category=Sanatan%20Basics", true),
+        ("❖", "understand_sanatan", "Respectful answers to common questions about Hindu ideas and practices", "हिंदू विचारों और परंपराओं से जुड़े सामान्य प्रश्नों के सम्मानपूर्ण उत्तर", "/understand", false),
+        ("🧠", "Philosophy", "Darshanas, Vedanta and the big questions", "दर्शन, वेदांत और जीवन के गहरे प्रश्न", "/explore?category=Philosophy", true),
+        ("✓", "verified_facts", "Only well-sourced verified facts", "केवल मज़बूत स्रोतों से समर्थित प्रमाणित तथ्य", "/facts", false),
+        ("🔬", "science_research", "Verified astronomy, mathematics, medicine and knowledge", "प्रमाणित खगोल, गणित, चिकित्सा और ज्ञान", "/science", false),
+        ("📚", "texts_library", "A structured guide to Hindu scriptures and knowledge texts", "हिंदू ग्रंथों और ज्ञान-साहित्य का व्यवस्थित परिचय", "/texts", false),
+        ("🏺", "epic_evidence", "Archaeology, inscriptions and geography connected with Ramayana and Mahabharata traditions", "रामायण और महाभारत परंपराओं से जुड़े पुरातत्त्व, अभिलेख और भूगोल", "/epic-evidence", false),
+        ("🏛", "History", "Timeline, developments and historical context", "समयरेखा, विकास और ऐतिहासिक संदर्भ", "/explore?category=History", true),
+        ("🪷", "Practices & Symbols", "Puja, mantra, namaste and symbolism", "पूजा, मंत्र, नमस्ते और प्रतीकों का अर्थ", "/explore?category=Practices%20%26%20Symbols", true),
+        ("🇮🇳", "Indian Knowledge Systems", "Mathematics, astronomy, grammar and medicine", "गणित, खगोल विज्ञान, व्याकरण और चिकित्सा", "/explore?category=Indian%20Knowledge%20Systems", true),
+        ("🌺", "Deities", "Divine forms, symbolism and traditions", "देव रूप, प्रतीक और परंपराएँ", "/explore?category=Deities", true),
+        ("👤", "Thinkers & Acharyas", "Rishis, philosophers and acharyas", "ऋषि, दार्शनिक और आचार्य", "/explore?category=Thinkers%20%26%20Acharyas", true)
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = (await Knowledge.GetAllAsync()).ToList();
+        today = await Daily.GetTodayAsync();
+    }
+
+    private static bool IsVerified(KnowledgeItem item) => item.EvidenceLevel == "Strong Evidence" && item.Sources.Count > 0;
+    private void GoSearch() => Nav.NavigateTo($"/search?q={Uri.EscapeDataString(query)}");
+    private void OnSearchKey(KeyboardEventArgs e) { if (e.Key == "Enter") GoSearch(); }
+}
